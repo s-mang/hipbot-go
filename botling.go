@@ -4,7 +4,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"io"
+	"net/http"
+	"net/url"
 	"github.com/daneharrigan/hipchat"
+	"./handler"
+)
+
+const (
+	POST_URL = "https://api.hipchat.com/v1/rooms/message"
+	POST_COLOR = "gray"
 )
 
 var (
@@ -12,8 +21,10 @@ var (
 	mentionname = os.Getenv("BOT_MENTIONNAME")
 	fullname = os.Getenv("BOT_FULLNAME")
 	password = os.Getenv("BOT_PASSWORD")
-	resource = "bot"
 	roomJid = os.Getenv("ROOM_JID")
+	roomId = os.Getenv("ROOM_ID")
+	roomApiId = os.Getenv("ROOM_APIID")
+	resource = "bot"
 )
 
 func main() {
@@ -32,14 +43,30 @@ func main() {
 	
 	for message := range botling.Messages() {
 		if strings.HasPrefix(message.Body, "@"+mentionname) {
-			botling.Say(roomJid, mentionname, "Hello, "+nickname(message.From))
+			reply, kind := handler.Reply(*message)
+			if kind == "html" {
+				url := POST_URL +
+					"?room_id=" + url.QueryEscape(roomId) + 
+					"&auth_token=" + url.QueryEscape(roomApiId) +
+					"&from=" + url.QueryEscape(fullname) +
+					"&message_format=html" +
+					"&color=" + POST_COLOR +
+					"&message=" + url.QueryEscape(reply)
+				
+				fmt.Println(url)
+				
+				var ioReader io.Reader	
+				resp, err := http.Post(url, "html", ioReader)
+				if err != nil {
+					fmt.Printf("Error occurred in HTTP POST to Hipchat API: %s\n", err)
+					return
+				}
+				resp.Body.Close()
+			} else {
+				botling.Say(roomJid, mentionname, reply)
+			}
 		}
 	}
-}
-
-func nickname(from string) (nick string) {
-	names := strings.Split(from, "/")
-	return names[1]
 }
 
 

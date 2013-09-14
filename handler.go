@@ -12,6 +12,8 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 		return goSearch(query), "text"
 	} else if strings.Contains(message.Body, "logo") {
 		return "<img src='" + LOGO_URL + "'/>", "html"
+	} else if strings.Contains(message.Body, "goodnight") {
+		return "Goodnight, " + name(message.From) + ". You're awesome.", "text"
 	} else {
 		return "Hello, " + name(message.From), "text"
 	}

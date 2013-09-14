@@ -1,1 +1,1 @@
-worker: go run botling.go
+worker: ./botling

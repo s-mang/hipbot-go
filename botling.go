@@ -4,19 +4,18 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"io"
-	"net/http"
 	"net/url"
 	"github.com/daneharrigan/hipchat"
-	"./handler"
 )
 
 const (
+	LOGO_URL = "https://1.gravatar.com/avatar/fcc942ea417a208d0f5d835b8427fcc4"
 	POST_URL = "https://api.hipchat.com/v1/rooms/message"
 	POST_COLOR = "gray"
 )
 
 var (
+	resource = "bot"
 	username = os.Getenv("BOT_USERNAME")
 	mentionname = os.Getenv("BOT_MENTIONNAME")
 	fullname = os.Getenv("BOT_FULLNAME")
@@ -24,7 +23,14 @@ var (
 	roomJid = os.Getenv("ROOM_JID")
 	roomId = os.Getenv("ROOM_ID")
 	roomApiId = os.Getenv("ROOM_APIID")
-	resource = "bot"
+	
+	htmlPostUrl = POST_URL +
+			"?room_id=" + url.QueryEscape(roomId) + 
+			"&auth_token=" + url.QueryEscape(roomApiId) +
+			"&from=" + url.QueryEscape(fullname) +
+			"&message_format=html" +
+			"&color=" + POST_COLOR +
+			"&message="
 )
 
 func main() {
@@ -35,38 +41,35 @@ func main() {
 		return
 	}
 	
+	welcomeBotling(*botling)
+	
+	// Check for @botling in messages & respond accordingly
+	for message := range botling.Messages() {
+		if strings.HasPrefix(message.Body, "@"+mentionname) {
+			
+			// Get appropriate reply message
+			reply, kind := replyMessage(*message)
+			
+			if kind == "html" {
+				// HTML messages sent via POST to Hipchat API
+				postUrl := htmlPostUrl + url.QueryEscape(reply)
+				replyWithHtml(postUrl)
+			} else {
+				// Plain text messages sent to Hipchat via XMPP
+				botling.Say(roomJid, mentionname, reply)
+			}
+		}
+	}
+}
+
+// Help Botling join the hipchat room with a status set to 'chat',
+// make Botling say hello, and run Botling as a goroutine
+func welcomeBotling(botling hipchat.Client) {
 	botling.Status("chat")
 	botling.Join(roomJid, fullname)
 	
 	botling.Say(roomJid, mentionname, "Hello all, Botling here.")
 	go botling.KeepAlive()
-	
-	for message := range botling.Messages() {
-		if strings.HasPrefix(message.Body, "@"+mentionname) {
-			reply, kind := handler.Reply(*message)
-			if kind == "html" {
-				url := POST_URL +
-					"?room_id=" + url.QueryEscape(roomId) + 
-					"&auth_token=" + url.QueryEscape(roomApiId) +
-					"&from=" + url.QueryEscape(fullname) +
-					"&message_format=html" +
-					"&color=" + POST_COLOR +
-					"&message=" + url.QueryEscape(reply)
-				
-				fmt.Println(url)
-				
-				var ioReader io.Reader	
-				resp, err := http.Post(url, "html", ioReader)
-				if err != nil {
-					fmt.Printf("Error occurred in HTTP POST to Hipchat API: %s\n", err)
-					return
-				}
-				resp.Body.Close()
-			} else {
-				botling.Say(roomJid, mentionname, reply)
-			}
-		}
-	}
 }
 
 

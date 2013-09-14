@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"github.com/daneharrigan/hipchat"
 )
 
-const (
-	USERNAME = "65829_460351"
-	MENTIONNAME = "botling"
-	FULLNAME = "Botling Sprout"
-	PASSWORD = "password"
-	RESOURCE = "bot"
-	ROOMJID = "65829_s._adams_codes@conf.hipchat.com"
+var (
+	username = os.Getenv("BOT_USERNAME")
+	mentionname = os.Getenv("BOT_MENTIONNAME")
+	fullname = os.Getenv("BOT_FULLNAME")
+	password = os.Getenv("BOT_PASSWORD")
+	resource = "bot"
+	roomJid = os.Getenv("ROOM_JID")
 )
 
 func main() {
-	botling, err := hipchat.NewClient(USERNAME, PASSWORD, RESOURCE)
+	botling, err := hipchat.NewClient(username, password, resource)
 	
 	if err != nil {
 		fmt.Printf("Client error occurred: %s\n", err)
@@ -24,13 +25,14 @@ func main() {
 	}
 	
 	botling.Status("chat")
-	botling.Join(ROOMJID, FULLNAME)
+	botling.Join(roomJid, fullname)
 	
-	botling.Say(ROOMJID, MENTIONNAME, "I'm Here!")
+	botling.Say(roomJid, mentionname, "Hello all, Botling here.")
+	go botling.KeepAlive()
 	
 	for message := range botling.Messages() {
-		if strings.HasPrefix(message.Body, "@"+MENTIONNAME) {
-			botling.Say(ROOMJID, MENTIONNAME, "Hello, "+nickname(message.From))
+		if strings.HasPrefix(message.Body, "@"+mentionname) {
+			botling.Say(roomJid, mentionname, "Hello, "+nickname(message.From))
 		}
 	}
 }

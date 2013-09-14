@@ -1,0 +1,1 @@
+worker: go run botling.go

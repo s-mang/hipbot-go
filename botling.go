@@ -68,7 +68,6 @@ func welcomeBotling(botling hipchat.Client) {
 	botling.Status("chat")
 	botling.Join(roomJid, fullname)
 	
-	botling.Say(roomJid, mentionname, "Hello all, Botling here.")
 	go botling.KeepAlive()
 }
 

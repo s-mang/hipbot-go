@@ -33,8 +33,6 @@ type QueryResult struct {
 func wolframSearch(query string) string {
 	resp, err := http.Get(postUrl + "&input=" + url.QueryEscape(query))
 	
-	fmt.Println(resp.Body)
-	
 	if err != nil {
 		fmt.Printf("Error in HTTP GET: %s", err)
 		return "error"
@@ -44,8 +42,6 @@ func wolframSearch(query string) string {
 	results := new(QueryResult)
 	
 	decoder.Decode(results)
-
-	fmt.Println((*results).Pods[0].Markup)
 	
 	output := ""
 	pods := (*results).Pods

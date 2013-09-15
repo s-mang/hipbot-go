@@ -7,14 +7,22 @@ import (
 
 // Returns the appropriate reply message for a given ping
 func replyMessage(message hipchat.Message) (reply, kind string) {
-	if strings.Contains(message.Body, "gopkg") { 
-		query := strings.Split(message.Body, "gopkg")[1]
+	switch {
+		// @botling wolfram me pi
+	case strings.Contains(message.Body, "wolfram me"):
+		query := strings.Split(message.Body, "wolfram me ")[1]
+		return wolframSearch(query), "html"
+		// @botling gopkg math
+	case strings.Contains(message.Body, "gopkg"):
+		query := strings.Split(message.Body, "gopkg ")[1]
 		return goSearch(query), "text"
-	} else if strings.Contains(message.Body, "logo") {
+		// @botling logo
+	case strings.Contains(message.Body, "logo"):
 		return "<img src='" + LOGO_URL + "'/>", "html"
-	} else if strings.Contains(message.Body, "goodnight") {
+		// @botling goodnight
+	case strings.Contains(message.Body, "goodnight"): 
 		return "Goodnight, " + name(message.From) + ". You're awesome.", "text"
-	} else {
+	default:
 		return "Hello, " + name(message.From), "text"
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-const GODOCURL = "http://api.godoc.org/search?q="
+const GO_DOC_URL = "http://api.godoc.org/search?q="
 
 type Result struct {
 	Path     string `json:"path"`
@@ -19,7 +19,7 @@ type Response struct {
 }
 
 func goSearch(query string) string {
-	res, err := http.Get(GODOCURL + url.QueryEscape(query))
+	res, err := http.Get(GO_DOC_URL + url.QueryEscape(query))
 	
 	if err != nil {
 		fmt.Printf("Error occurred in HTTP GET: %s", err)

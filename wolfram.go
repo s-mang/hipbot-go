@@ -15,7 +15,7 @@ const (
 )
 
 var (
-	appid = os.Getenv("q")
+	appid = os.Getenv("WOLFRAM_APIID")
 	postUrl = WOLFRAM_URL + 
 		"?format=html"+
 		"&appid=" + appid

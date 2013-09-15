@@ -26,6 +26,8 @@ func goSearch(query string) string {
 		return "error"
 	}
 	
+	defer res.Body.Close()
+	
 	decoder := json.NewDecoder(res.Body)
 	response := new(Response)
 	

@@ -54,9 +54,12 @@ func wolframSearch(query string) string {
 		output += markup(pods[i].Markup)
 		output += "<br>"
 	}
-		
-	
-	return output
+
+	if output == "" {
+		return "I found nothing! So sorry."
+	} else {
+		return output
+	}
 }
 
 func markup(data string) string {

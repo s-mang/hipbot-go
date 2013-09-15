@@ -63,7 +63,7 @@ func wolframSearch(query string) string {
 }
 
 func markup(data string) string {
-	replacer := strings.NewReplacer("<![CDATA[", "", "]]>", "")
+	replacer := strings.NewReplacer("<![CDATA[", "", "]]>", "", "<img", "<br>&nbsp;&nbsp;&nbsp;<img")
 	return replacer.Replace(data)
 }
 

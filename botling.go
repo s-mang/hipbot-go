@@ -11,7 +11,7 @@ import (
 const (
 	LOGO_URL = "https://1.gravatar.com/avatar/fcc942ea417a208d0f5d835b8427fcc4"
 	POST_URL = "https://api.hipchat.com/v1/rooms/message"
-	POST_COLOR = "purple"
+	POST_COLOR = "gray"
 )
 
 var (

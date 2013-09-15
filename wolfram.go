@@ -97,7 +97,7 @@ func searchResults(pods []Pod) string {
 	}
 	
 	if output == "" {
-		return "I found nothing! So sorry.<br>"
+		return "I found nothing! So sorry. Your query may be too general. <br>"
 	} else {
 		return output
 	}

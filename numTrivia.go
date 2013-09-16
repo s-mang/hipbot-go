@@ -17,7 +17,7 @@ func numTrivia(query string) string {
 	
 	if query == "today" {
 		today := time.Now()
-		day, month, _ := today.Date()
+		_, month, day := today.Date()
 	
 		triviaResp, triviaErr = http.Get(NUMBERS_API_URL + "/"+strconv.Itoa(int(month))+"/"+strconv.Itoa(int(day))+"/date")
 	} else {

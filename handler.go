@@ -8,6 +8,10 @@ import (
 // Returns the appropriate reply message for a given ping
 func replyMessage(message hipchat.Message) (reply, kind string) {
 	switch {
+		// @botling weather me today
+	case strings.Contains(message.Body, "weather me"):
+		query := strings.Split(message.Body, "weather me ")[1]
+		return weather(query), "html"
 		// @botling trivia me today
  	case strings.Contains(message.Body, "trivia me today"):
 		return numTrivia("today"), "text"

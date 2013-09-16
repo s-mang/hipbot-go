@@ -8,6 +8,9 @@ import (
 // Returns the appropriate reply message for a given ping
 func replyMessage(message hipchat.Message) (reply, kind string) {
 	switch {
+	case strings.Contains(message.Body, "image me"):
+		query := strings.Split(message.Body, "image me ")[1]
+		return flickrSearch(query), "html"
 		// @botling weather me today
 	case strings.Contains(message.Body, "weather me"):
 		query := strings.Split(message.Body, "weather me ")[1]

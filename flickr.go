@@ -61,10 +61,17 @@ func flickrSearch(query string) string {
 	
 	decoder.Decode(response)
 	
-	r := randNum(len(response.Page.PhotoList))
-	src := photoUrl(response.Page.PhotoList[r])
+	max := len(response.Page.PhotoList)
 	
-	return "<img src='"+src+"'>"
+	if max > 0 {
+		r := randNum(max)
+		src := photoUrl(response.Page.PhotoList[r])
+	
+		return "<img src='"+src+"'>"
+	} else {
+		return "I found nothing! So sorry."
+	}
+	
 }
 
 func withoutFlickrWrapper(body string) string {

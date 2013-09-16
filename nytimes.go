@@ -54,7 +54,7 @@ func nytimes(subject string) string {
 }
 
 func htmlArticleList(docs []Doc, querySubject string) string {
-	html := "<strong>NYTIMES ON "+strings.ToUpper(querySubject)+" "+prettyDate(docs[0].PublishDate)+"</strong><br>"
+	html := "<strong>NYTIMES ON "+strings.ToUpper(querySubject)+"</strong><br>"
 	html += "<ul>"
 	for i := range docs {
 		if i > 2 {
@@ -69,15 +69,6 @@ func htmlArticleList(docs []Doc, querySubject string) string {
 	
 	return html
 	
-}
-
-func prettyDate(date string) string {
-	splitDate := strings.Split(date, "-")
-	year := splitDate[0]
-	month := splitDate[1]
-	day := strings.Split(splitDate[2], "T")[0]
-	
-	return (month + "/" + day + "/" + year)
 }
 
 

@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
+	"math/rand"
 )
 
 const FLICKR_ENDPOINT = "http://api.flickr.com/services/rest"
@@ -60,7 +61,8 @@ func flickrSearch(query string) string {
 	
 	decoder.Decode(response)
 	
-	src := photoUrl(response.Page.PhotoList[0])
+	r := randNum(len(response.Page.PhotoList))
+	src := photoUrl(response.Page.PhotoList[r])
 	
 	return "<img src='"+src+"'>"
 }
@@ -79,6 +81,16 @@ func photoUrl(photo Photo) string {
 	src += photo.Secret + ".jpg"
 	
 	return src
+}
+
+func randNum(max int) int {
+	seed := int64(2)
+	source := rand.NewSource(seed)
+	rander := rand.New(source)
+	rInt := rander.Int()
+	
+	smallerRInt := rInt%max
+	return smallerRInt
 }
 
 

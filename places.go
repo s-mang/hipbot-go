@@ -9,12 +9,6 @@ import (
 	"strings"
 )
 
-const (
-	LAT_LNG = "37.776266,-122.397550"
-	QUERY_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+LAT_LNG+"&sensor=false&rankby=distance"
-	MAPS_ENDPOINT = "https://maps.googleapis.com/maps/api/staticmap?center="+LAT_LNG+"&zoom=15&size=600x200&sensor=false"
-)
-
 var googleApiKey = os.Getenv("GOOGLE_API_KEY")
 
 type Place struct {

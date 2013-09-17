@@ -10,8 +10,6 @@ import (
 	"net/url"
 )
 
-const NYTIMES_QUERY_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=newest"
-
 var nytimesKey = os.Getenv("NYTIMES_KEY")
 
 type NytimesResponse struct {

@@ -12,8 +12,6 @@ import (
 	"math/rand"
 )
 
-const FLICKR_ENDPOINT = "http://api.flickr.com/services/rest"
-
 var flickrApiKey = os.Getenv("FLICKER_API_KEY")
 
 type PhotoResponse struct {

@@ -9,11 +9,6 @@ import (
 	"fmt"
 )
 
-const (
-	WOLFRAM_URL = "http://api.wolframalpha.com/v2/query"
-	MAX_RESULTS = 5
-)
-
 var (
 	appid = os.Getenv("WOLFRAM_APIID")
 	postUrl = WOLFRAM_URL + 

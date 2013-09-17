@@ -8,8 +8,6 @@ import (
 	"strconv"
 )
 
-const NUMBERS_API_URL = "http://numbersapi.com/"
-
 
 func numTrivia(query string) string {
 	var triviaResp *http.Response

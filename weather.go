@@ -9,13 +9,6 @@ import (
 	"time"
 )
 
-const (
-	WEATHER_ENDPOINT = "https://api.forecast.io/forecast/"
-	SPROUTLING_LAT = "37.776266"
-	SPROUTLING_LNG = "-122.397550"
-	WEATHER_ICON_ENDPOINT = "https://cdn1.iconfinder.com/data/icons/sketchy-weather-icons-by-azuresol/64/"
-)
-
 var weatherApiKey = os.Getenv("WEATHER_API_KEY")
 
 
@@ -41,7 +34,7 @@ type DailyData struct {
 }
 
 func weather(query string) string {
-	queryUrl := WEATHER_ENDPOINT + weatherApiKey +"/"+SPROUTLING_LAT+","+SPROUTLING_LNG
+	queryUrl := WEATHER_ENDPOINT + weatherApiKey +"/"+LAT_LNG
 	if query == "tomorrow" {
 		tomorrow := time.Now().AddDate(0, 0, 1)
 		queryUrl += ","+formattedTime(tomorrow)

@@ -7,8 +7,6 @@ import (
 	"fmt"
 )
 
-const GO_DOC_URL = "http://api.godoc.org/search?q="
-
 type Result struct {
 	Path     string `json:"path"`
 	Synopsis string `json:"synopsis"`

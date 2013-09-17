@@ -9,6 +9,11 @@ import (
 func replyMessage(message hipchat.Message) (reply, kind string) {
 	switch {
 		
+		// @botling thesaurus me challenge
+	case strings.Contains(message.Body, "thesaurus me"):
+		query := strings.Split(message.Body, "thesaurus me ")[1]
+		return synonyms(query), "html"
+		
 		// @botling nearby sushi
 	case strings.Contains(message.Body, "nearby"):
 		query := strings.Split(message.Body, "nearby ")[1]

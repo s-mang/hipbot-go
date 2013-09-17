@@ -19,17 +19,11 @@ var (
 type QueryResult struct {
     XMLName xml.Name `xml:"queryresult"`
     Pods   []Pod  `xml:"pod"`
-	Assumptions []Assumption `xml:"assumptions"`
 	Didyoumeans []Didyoumean `xml:"didyoumeans"`
 }
 
 type Pod struct {
 	Markup string `xml:"markup"`
-}
-
-type Assumption struct {
-	Type string `xml:"type,attr"`
-	Values []Value `xml:"value"`
 }
 
 type Value struct {
@@ -62,14 +56,9 @@ func fullResponse(results QueryResult) string {
 	output := ""
 	
 	pods := (results).Pods
-	assumptions := (results).Assumptions
 	didyoumeans := (results).Didyoumeans
 	
 	output += searchResults(pods)
-	
-	if len(assumptions) > 0 && assumptions[0].Type == "Clash" {
-		output += assumptionCategories(assumptions[0])
-	}
 	
 	if len(didyoumeans) > 0 {
 		output += didYouMeanText(didyoumeans)
@@ -97,22 +86,6 @@ func searchResults(pods []Pod) string {
 		return output
 	}
 	
-}
-
-func assumptionCategories(clashes Assumption) string {
-	output := ""
-	for i := range clashes.Values {
-		if i == 0 {
-			output += "For better results, prepend your query with one of the following categories+':'."+
-			" For example, 'acronym:RAID'<br>Categories: "
-		}
-		
-		output += "" + clashes.Values[i].Name
-		output += "<br>"
-	}
-	
-	
-	return output
 }
 
 func didYouMeanText(didyoumeans []Didyoumean) string {

@@ -87,31 +87,4 @@ func formattedWeather(weather WeatherResults, query string) string {
 	return weatherHtml
 }
 
-func weatherIcon(weatherType string) string {
-	switch weatherType {
-	case "clear-day":
-		return "32_cloud_weather.png"
-	case "clear-night":
-		return "31_cloud_weather.png"
-	case "rain":
-		return "11_cloud_weather.png"
-	case "snow":
-		return "41_cloud_weather.png"
-	case "sleet":
-		return "40_cloud_weather.png"
-	case "wind":
-		return "24_cloud_weather.png"
-	case "fog":
-		return "20_cloud_weather.png"
-	case "cloudy":
-		return "26_cloud_weather.png"
-	case "partly-cloudy-day":
-		return "30_cloud_weather.png"
-	case "partly-cloudy-night":
-		return "29_cloud_weather.png"
-	default:
-		return "na_cloud_weather.png"
-	}
-}
-
 

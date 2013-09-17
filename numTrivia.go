@@ -9,7 +9,7 @@ import (
 )
 
 
-func numTrivia(query string) string {
+func numberTrivia(query string) string {
 	var triviaResp *http.Response
 	var triviaErr error
 	

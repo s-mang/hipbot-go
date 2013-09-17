@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
-	"math/rand"
 )
 
 var flickrApiKey = os.Getenv("FLICKER_API_KEY")
@@ -86,16 +85,6 @@ func photoUrl(photo Photo) string {
 	src += photo.Secret + ".jpg"
 	
 	return src
-}
-
-func randNum(max int) int {
-	seed := int64(2)
-	source := rand.NewSource(seed)
-	rander := rand.New(source)
-	rInt := rander.Int()
-	
-	smallerRInt := rInt%max
-	return smallerRInt
 }
 
 

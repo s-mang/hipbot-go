@@ -98,13 +98,4 @@ func openNowHtml(isOpen bool) string {
 	}
 }
 
-func alphabet(i int) string {
-	alphab := [7]string{"A", "B", "C", "D", "E", "F", "G"}
-	return alphab[i]
-}
-
-func latlngPair(location PlaceLocation) string {
-	return (string(location.Lat) + "," + string(location.Lng))
-}
-
 

@@ -2,73 +2,73 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"os"
+	"io/ioutil"
 	"net/http"
 	"net/url"
-	"encoding/json"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
 var flickrApiKey = os.Getenv("FLICKER_API_KEY")
 
 type PhotoResponse struct {
-	Page Page `json:"photos"` 
+	Page Page `json:"photos"`
 }
 
 type Page struct {
-	PhotoList []Photo `json:"photo"` 
+	PhotoList []Photo `json:"photo"`
 }
 
 type Photo struct {
-	Id string `json:"id"`
-	Secret string `json:"secret"`
-	Server string `json:"server"`
-	Farm json.Number `json:"farm"`
+	Id     string      `json:"id"`
+	Secret string      `json:"secret"`
+	Server string      `json:"server"`
+	Farm   json.Number `json:"farm"`
 }
 
 func flickrSearch(query string) string {
 	requestArgs := "?method=flickr.photos.search"
-	requestArgs += "&api_key="+flickrApiKey
+	requestArgs += "&api_key=" + flickrApiKey
 	requestArgs += "&format=json"
-	requestArgs += "&page=1&per_page=1&sort=relevance&is_getty=true&media=photo"
-	requestArgs += "&tags="+url.QueryEscape(query)
-	
+	requestArgs += "&page=1&per_page=1&sort=relevance&is_getty=false&media=photo"
+	requestArgs += "&tags=" + url.QueryEscape(query)
+
 	res, err := http.Get(FLICKR_ENDPOINT + requestArgs)
-	
+
 	if err != nil {
 		fmt.Printf("Error occurred in HTTP GET: %s", err)
 		return "error"
 	}
-	
+
 	defer res.Body.Close()
-	
+
 	bdy, err := ioutil.ReadAll(res.Body)
-	
+
 	if err != nil {
 		fmt.Println(err)
 		return "error"
 	}
-	
+
 	stringBdy := withoutFlickrWrapper(string(bdy))
-	reader := strings.NewReader(stringBdy)	
+	reader := strings.NewReader(stringBdy)
 	decoder := json.NewDecoder(reader)
 	response := new(PhotoResponse)
-	
+
 	decoder.Decode(response)
-	
+
 	max := len(response.Page.PhotoList)
-	
+
 	if max > 0 {
 		r := randNum(max)
 		src := photoUrl(response.Page.PhotoList[r])
-	
-		return "<img src='"+src+"'>"
+
+		return "<img src='" + src + "'>"
 	} else {
 		return "I found nothing! So sorry."
 	}
-	
+
 }
 
 func withoutFlickrWrapper(body string) string {
@@ -83,8 +83,6 @@ func photoUrl(photo Photo) string {
 	src += photo.Server + "/"
 	src += photo.Id + "_"
 	src += photo.Secret + ".jpg"
-	
+
 	return src
 }
-
-

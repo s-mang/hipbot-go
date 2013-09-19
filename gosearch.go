@@ -31,5 +31,9 @@ func goSearch(query string) string {
 	
 	decoder.Decode(response)
 	
-	return (*(response.Results[0])).Synopsis
+	if response.Results) == 0 {
+		return "I found nothing! So sorry."
+	} else {
+		return (*(response.Results[0])).Synopsis
+	}
 }

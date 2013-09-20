@@ -44,8 +44,8 @@ func flickrSearch(query string) string {
 	requestArgs += "&api_key=" + flickrApiKey
 	requestArgs += "&format=json"
 	requestArgs += "&tags=" + url.QueryEscape(query)
-	// Only get the 30 most relevant images to choose from
-	requestArgs += "&page=1&per_page=30"
+	// Only get the 15 most relevant images to choose from
+	requestArgs += "&page=1&per_page=15"
 	requestArgs += "&sort=relevance"
 	requestArgs += "&media=photo"
 

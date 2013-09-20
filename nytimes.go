@@ -75,7 +75,10 @@ func htmlArticleList(docs []Doc, querySubject string) string {
 
 	// Unordered list of first 4 articles
 	html += "<ul>"
-	for i := range docs[:4] {
+	for i := range docs {
+		if i > 3 {
+			break
+		}
 		html += "<li>"
 		// Header is a link to the article
 		html += "<a href='" + docs[i].Url + "'>" + docs[i].Headline.Main + "</a>: <br>"

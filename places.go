@@ -87,7 +87,10 @@ func htmlPlaces(places []Place, query string) string {
 	markers := ""
 
 	// Only use the first 4 places
-	for i := range places[:4] {
+	for i := range places {
+		if i > 3 {
+			break
+		}
 		// Bullet point for each place, includes name, address, rating (or "N/A"), open-now
 		html += "<li>" + places[i].Name + "<br>"
 		html += places[i].Address + "<br>"

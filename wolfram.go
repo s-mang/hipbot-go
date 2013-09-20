@@ -97,7 +97,10 @@ func htmlWolframRespose(pods []Pod) string {
 
 	// If there is too much text, Hipchat will reject the POST
 	// Since Wolfram can return a huge number of result pods, we cut them off at 6
-	for i := range pods[:6] {
+	for i := range pods {
+		if i > 5 {
+			break
+		}
 		output += "<li>" + replacer.Replace(pods[i].Markup) + "</li>"
 	}
 	output += "</ul>"

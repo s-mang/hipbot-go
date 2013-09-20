@@ -1,5 +1,8 @@
-// Not currently in use - photos are not very relevant
 package main
+
+// @botling image me <query>
+// Search Flickr's photos for <query> via their REST API
+// return HTML image tag or else a text no-results response
 
 import (
 	"encoding/json"
@@ -64,7 +67,9 @@ func flickrSearch(query string) string {
 	imageCount := len(photos.Page.PhotoList)
 
 	// Check if we got any photos back
-	if imageCount > 0 {
+	if imageCount == 0 {
+		return "I found nothing! So sorry."
+	} else {
 		// Of the photos we got, return one at random
 		// so that if bot is asked to run the same query,
 		// the user is likely to get a different image.
@@ -72,8 +77,6 @@ func flickrSearch(query string) string {
 		src := photoUrl(photos.Page.PhotoList[r])
 
 		return "<img src='" + src + "'>"
-	} else {
-		return "I found nothing! So sorry."
 	}
 
 }

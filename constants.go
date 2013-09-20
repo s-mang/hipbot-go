@@ -2,7 +2,6 @@ package main
 
 const (
 	// API endpoints
-	GO_DOC_URL            = "http://api.godoc.org/search?q="
 	NUMBERS_API_URL       = "http://numbersapi.com/"
 	NYTIMES_QUERY_URL     = "http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=newest"
 	QUERY_URL             = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + "--LTLNGPR--" + "&sensor=false&rankby=distance"

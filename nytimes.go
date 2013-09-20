@@ -3,11 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"os"
 	"io/ioutil"
-	"strings"
+	"net/http"
 	"net/url"
+	"os"
+	"strings"
 )
 
 var nytimesKey = os.Getenv("NYTIMES_KEY")
@@ -21,10 +21,10 @@ type ResponseData struct {
 }
 
 type Doc struct {
-	Url string `json:"web_url"`
-	Snippet string `json:"snippet"`
-	Headline Headline `json:"headline"`
-	PublishDate string `json:"pub_date"`
+	Url         string   `json:"web_url"`
+	Snippet     string   `json:"snippet"`
+	Headline    Headline `json:"headline"`
+	PublishDate string   `json:"pub_date"`
 }
 
 type Headline struct {
@@ -32,45 +32,39 @@ type Headline struct {
 }
 
 func nytimes(subject string) string {
-	additionalParams := "&fq=section_name:"+url.QueryEscape(subject)+"&api-key="+nytimesKey
+	additionalParams := "&fq=section_name:" + url.QueryEscape(subject) + "&api-key=" + nytimesKey
 
 	res, err := http.Get(NYTIMES_QUERY_URL + additionalParams)
-	
+
 	if err != nil {
 		fmt.Printf("Error occurred in HTTP GET: %s", err)
 		return "error"
 	}
-	
+
 	defer res.Body.Close()
-	
+
 	bd, _ := ioutil.ReadAll(res.Body)
 	iface := new(NytimesResponse)
-	
+
 	_ = json.Unmarshal(bd, &iface)
-	
+
 	return htmlArticleList(iface.ResponseData.Docs, subject)
 }
 
 func htmlArticleList(docs []Doc, querySubject string) string {
-	html := "<strong>NYTIMES ON "+strings.ToUpper(querySubject)+"</strong><br>"
+	html := "<strong>NYTIMES ON " + strings.ToUpper(querySubject) + "</strong><br>"
 	html += "<ul>"
 	for i := range docs {
 		if i > 2 {
 			break
 		}
-		
+
 		html += "<li>"
-		html += "<a href='"+docs[i].Url+"'>"+docs[i].Headline.Main+"</a>: <br>"
-		html += "<ul style='list-style:none'><li>"+docs[i].Snippet+"</li></ul>" 
+		html += "<a href='" + docs[i].Url + "'>" + docs[i].Headline.Main + "</a>: <br>"
+		html += "<ul style='list-style:none'><li>" + docs[i].Snippet + "</li></ul>"
 		html += "</li><br><br>"
 	}
-	
+
 	return html
-	
+
 }
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
-	"net/url"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -12,12 +12,12 @@ import (
 var googleApiKey = os.Getenv("GOOGLE_API_KEY")
 
 type Place struct {
-	Icon string `json:"icon"`
-	Name string `json:"name"`
-	OpenHours OpenHours `json:"opening_hours"`
-	Rating json.Number `json:"rating"`
-	Address string `json:"vicinity"`
-	Geometry Geometry `json:"geometry"`
+	Icon      string      `json:"icon"`
+	Name      string      `json:"name"`
+	OpenHours OpenHours   `json:"opening_hours"`
+	Rating    json.Number `json:"rating"`
+	Address   string      `json:"vicinity"`
+	Geometry  Geometry    `json:"geometry"`
 }
 
 type Geometry struct {
@@ -38,47 +38,47 @@ type PlacesResponse struct {
 }
 
 func places(query string) string {
-	additionalParams := "key="+googleApiKey+"&keyword="+url.QueryEscape(query)
+	additionalParams := "key=" + googleApiKey + "&keyword=" + url.QueryEscape(query)
 	fullQueryUrl := QUERY_URL + "&" + additionalParams
-	
+
 	res, err := http.Get(fullQueryUrl)
-	
+
 	if err != nil {
 		fmt.Printf("Error occurred in HTTP GET: %s", err)
 		return "error"
 	}
-	
+
 	defer res.Body.Close()
-	
+
 	decoder := json.NewDecoder(res.Body)
 	response := new(PlacesResponse)
-	
+
 	decoder.Decode(response)
-	
+
 	return htmlPlaces(response.Places, query)
-	
+
 }
 
 func htmlPlaces(places []Place, query string) string {
-	html := "<strong>Results for Nearby "+strings.Title(query)+"</strong><br><ul>"
+	html := "<strong>Results for Nearby " + strings.Title(query) + "</strong><br><ul>"
 	markers := ""
 	for i := range places {
 		if i > 2 {
 			break
 		}
-		
-		html += "<li>"+places[i].Name+"<br>"
+
+		html += "<li>" + places[i].Name + "<br>"
 		html += places[i].Address + "<br>"
-		html += "<em>Rating: "+stringRating(places[i].Rating)+"</em> | "
+		html += "<em>Rating: " + stringRating(places[i].Rating) + "</em> | "
 		html += openNowHtml(places[i].OpenHours.OpenNow) + "<br></li>"
-		
-		markers += "&markers=color:blue|label:"+alphabet(i)+"|"+latlngPair(places[i].Geometry.PlaceLocation)
+
+		markers += "&markers=color:blue|label:" + alphabet(i) + "|" + latlngPair(places[i].Geometry.PlaceLocation)
 	}
-	
+
 	html += "</ul><br>"
-	
-	html += "<img src='"+MAPS_ENDPOINT+markers+"'>"
-	
+
+	html += "<img src='" + MAPS_ENDPOINT + markers + "'>"
+
 	return html
 }
 
@@ -97,5 +97,3 @@ func openNowHtml(isOpen bool) string {
 		return "<strong>Closed</strong>"
 	}
 }
-
-

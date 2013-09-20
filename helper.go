@@ -1,8 +1,8 @@
 package main
 
 import (
-	"strings"
 	"math/rand"
+	"strings"
 )
 
 // Grabs a user's full name from a hipchat.Message.From string
@@ -17,8 +17,8 @@ func randNum(max int) int {
 	source := rand.NewSource(seed)
 	rander := rand.New(source)
 	rInt := rander.Int()
-	
-	smallerRInt := rInt%max
+
+	smallerRInt := rInt % max
 	return smallerRInt
 }
 

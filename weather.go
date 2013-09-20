@@ -1,25 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"net/http"
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
 	"strings"
 	"time"
 )
 
 var weatherApiKey = os.Getenv("WEATHER_API_KEY")
 
-
 type WeatherResults struct {
 	Current Current `json:"currently"`
-	Day Day `json:"daily"`
+	Day     Day     `json:"daily"`
 }
 
 type Current struct {
 	Temperature json.Number `json:"temperature"`
-	Icon string `json:"icon"`
+	Icon        string      `json:"icon"`
 }
 
 type Day struct {
@@ -27,34 +26,34 @@ type Day struct {
 }
 
 type DailyData struct {
-	Summary string `json:"summary"`
+	Summary           string      `json:"summary"`
 	PrecipProbability json.Number `json:"precipProbability"`
-	TempMin json.Number `json:"temperatureMin"`
-	TempMax json.Number `json:"temperatureMax"`
+	TempMin           json.Number `json:"temperatureMin"`
+	TempMax           json.Number `json:"temperatureMax"`
 }
 
 func weather(query string) string {
-	queryUrl := WEATHER_ENDPOINT + weatherApiKey +"/"+LAT_LNG
+	queryUrl := WEATHER_ENDPOINT + weatherApiKey + "/" + LAT_LNG
 	if query == "tomorrow" {
 		tomorrow := time.Now().AddDate(0, 0, 1)
-		queryUrl += ","+formattedTime(tomorrow)
+		queryUrl += "," + formattedTime(tomorrow)
 	}
-	
+
 	wResp, wReqErr := http.Get(queryUrl)
 	if wReqErr != nil {
 		fmt.Println(wReqErr)
 		return "error"
 	}
-	
+
 	defer wResp.Body.Close()
-	
+
 	weatherDecoder := json.NewDecoder(wResp.Body)
 	weatherResults := new(WeatherResults)
-	
+
 	weatherDecoder.Decode(weatherResults)
-	
+
 	return formattedWeather(*weatherResults, query)
-	
+
 }
 
 func formattedTime(t time.Time) string {
@@ -62,7 +61,7 @@ func formattedTime(t time.Time) string {
 	timeParts := strings.Split(t.String(), " ")
 	stringDate := timeParts[0]
 	stringTime := strings.Split(timeParts[1], ".")[0]
-	
+
 	return (stringDate + "T" + stringTime)
 }
 
@@ -73,18 +72,16 @@ func formattedWeather(weather WeatherResults, query string) string {
 	precipProb := string(weather.Day.DailyData[0].PrecipProbability)
 	tempMin := string(weather.Day.DailyData[0].TempMin)
 	tempMax := string(weather.Day.DailyData[0].TempMax)
-	
+
 	formattedTitle := strings.Title(query) + "'s Weather"
 
-	weatherHtml := "&nbsp;&nbsp;<strong>"+formattedTitle+"</strong>: "+daySummary+".<br>"
-	weatherHtml += "<ul><li>High: "+tempMax+"&deg;, Low: "+tempMin+"&deg;</li>"
-	weatherHtml += "<li>Precipitation: "+precipProb+"&#37; chance</li>"
+	weatherHtml := "&nbsp;&nbsp;<strong>" + formattedTitle + "</strong>: " + daySummary + ".<br>"
+	weatherHtml += "<ul><li>High: " + tempMax + "&deg;, Low: " + tempMin + "&deg;</li>"
+	weatherHtml += "<li>Precipitation: " + precipProb + "&#37; chance</li>"
 	if query == "today" {
-		weatherHtml += "<li>Currently "+currentTemp+"&deg;</li>"
+		weatherHtml += "<li>Currently " + currentTemp + "&deg;</li>"
 	}
-	weatherHtml += "<li><img src='"+WEATHER_ICON_ENDPOINT+weatherIcon(currentIcon)+"'></li></ul>"
+	weatherHtml += "<li><img src='" + WEATHER_ICON_ENDPOINT + weatherIcon(currentIcon) + "'></li></ul>"
 
 	return weatherHtml
 }
-
-

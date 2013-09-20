@@ -36,6 +36,8 @@ type Headline struct {
 	Main string `json:"main"`
 }
 
+// Get 3 most recent articles with section_name=<subject>
+// Uses nytimes API
 func nytimes(subject string) string {
 	// Set request args for nytimes search
 	// Sort - newest

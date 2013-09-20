@@ -91,6 +91,10 @@ func formattedTime(t time.Time) string {
 
 // Format the weather forecast struct as pretty HTML for the Hipchat POST
 func formattedWeather(weather WeatherResults, query string) string {
+	if len(weather.Day.DailyData) == 0 {
+		return "I found nothing! So sorry."
+	}
+
 	dailyData := weather.Day.DailyData[0]
 	formattedTitle := strings.Title(query) + "'s Weather"
 

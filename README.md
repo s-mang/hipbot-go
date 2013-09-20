@@ -9,7 +9,7 @@ Hipchat bot written in Go
 3. @botling image me sunset
 4. @botling weather me tomorrow
 5. @botling trivia me today
-6. @botling trivia me number 123
+6. @botling trivia me 123
 7. @botling wolfram me periodic table of elements
 8. @botling gopkg math
 9. @botling sproutling logo

@@ -42,6 +42,9 @@ func goSearch(query string) string {
 	if len(response.Results) == 0 {
 		return "I found nothing! So sorry."
 	} else {
-		return (*(response.Results[0])).Synopsis
+		firstResult := (*(response.Results[0]))
+		textResponse := "Synopsis: " + firstResult.Synopsis
+		textResponse += "\nPath: \"" + firstResult.Path + "\""
+		return textResponse
 	}
 }

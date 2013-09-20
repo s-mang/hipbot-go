@@ -28,13 +28,13 @@ var (
 	resource = "bot" // Kind of Hipchat user (probably shouldn't change this)
 
 	// Vars needed for Botling to ping Hipchat:
-	username    = os.Getenv("BOT_USERNAME")
-	mentionname = os.Getenv("BOT_MENTIONNAME")
-	fullname    = os.Getenv("BOT_FULLNAME")
-	password    = os.Getenv("BOT_PASSWORD")
-	roomJid     = os.Getenv("ROOM_JID")
-	roomId      = os.Getenv("ROOM_ID")
-	roomApiId   = os.Getenv("ROOM_APIID")
+	username     = os.Getenv("BOT_USERNAME")
+	mentionname  = os.Getenv("BOT_MENTIONNAME")
+	fullname     = os.Getenv("BOT_FULLNAME")
+	password     = os.Getenv("BOT_PASSWORD")
+	roomJid      = os.Getenv("ROOM_JID")
+	roomId       = os.Getenv("ROOM_ID")
+	roomApiToken = os.Getenv("ROOM_API_TOKEN")
 
 	// Var needed for location-based commands (ie. weather, nearby)
 	latLngPair = os.Getenv("LAT_LNG_PAIR")
@@ -45,7 +45,7 @@ var (
 	// URL used to post HTML to your Hipchat room, complete with query params
 	htmlPostUrl = HIPCHAT_HTML_POST_ENDPOINT +
 		"?room_id=" + url.QueryEscape(roomId) +
-		"&auth_token=" + url.QueryEscape(roomApiId) +
+		"&auth_token=" + url.QueryEscape(roomApiToken) +
 		"&from=" + url.QueryEscape(fullname) +
 		"&color=" + HIPCHAT_HTML_POST_COLOR +
 		"&message_format=html"

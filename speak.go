@@ -46,7 +46,7 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 		query := strings.Split(message.Body, "weather me ")[1]
 		return weather(query), "html"
 
-	// @botling trivia me today
+		// @botling trivia me today
 	case strings.Contains(message.Body, "trivia me today"):
 		return numberTrivia("today"), "text"
 

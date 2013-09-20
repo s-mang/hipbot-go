@@ -6,7 +6,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -60,7 +60,7 @@ func places(query string) string {
 	res, err := http.Get(fullQueryUrl)
 
 	if err != nil {
-		fmt.Printf("Error in HTTP GET: %s", err)
+		log.Println("Error in HTTP GET:", err)
 		return "error"
 	}
 

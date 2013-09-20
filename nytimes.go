@@ -1,5 +1,9 @@
 package main
 
+// @botling nytimes <section-name-query>
+// Get 3 most recent NY Times article in the section <section-name-query>
+// return a html list of articles or else text no-results response
+
 import (
 	"encoding/json"
 	"log"
@@ -58,6 +62,11 @@ func nytimes(subject string) string {
 
 // HTML formatter for a []Doc instance
 func htmlArticleList(docs []Doc, querySubject string) string {
+	// Check that ther actually are any results
+	if len(docs) == 0 {
+		return "I found nothing! So sorry."
+	}
+
 	// Title
 	html := "<strong>NYTIMES ON " + strings.ToUpper(querySubject) + "</strong><br>"
 

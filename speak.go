@@ -1,5 +1,9 @@
 package main
 
+// This file is mainly comprised of a switch statment that maps a hipchat.Message
+// to the appropriate function, and returns the result along with a string reprenting
+// the format of the response ("html" or "text")
+
 import (
 	"github.com/daneharrigan/hipchat"
 	"io"
@@ -75,13 +79,14 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 	}
 }
 
-// Post Botling's reply either via Hipchat's API (for html) or XMPP (for text)
+// Post Botling's reply via Hipchat's API (for html responses)
+// Note that text responses will be submitted to Hipchat via XMPP (see botling.go)
 func replyWithHtml(url string) {
 	var ioReader io.Reader
 	resp, err := http.Post(url, "html", ioReader)
 
 	if err != nil {
-		log.Println("Error occurred in HTTP POST to Hipchat API:", err)
+		log.Println("Error in POST to Hipchat API:", err)
 		return
 	}
 

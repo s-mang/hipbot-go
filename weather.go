@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -105,7 +106,13 @@ func formattedWeather(weather WeatherResults, query string) string {
 	weatherHtml += "<ul><li>High: " + string(dailyData.TempMax) + "&deg;, Low: " + string(dailyData.TempMin) + "&deg;</li>"
 
 	// Percent chance of precipitation (ex: Precipitation: 20% chance)
-	weatherHtml += "<li>Precipitation: " + string(dailyData.PrecipProbability) + "&#37; chance</li>"
+	float64Chance, err := dailyData.PrecipProbability.Float64()
+	if err != nil {
+		log.Println("Error:", err)
+		return err.Error()
+	}
+
+	weatherHtml += "<li>Precipitation: " + strconv.FormatFloat(float64Chance*100, 'f', 2, 64) + "&#37; chance</li>"
 
 	// Show current weather if <query> == "today"
 	if query == "today" {

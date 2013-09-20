@@ -5,7 +5,7 @@ Botling
 
 Botling is a neat little bot with some awesome functionality. He sits comfortably in your Hipchat room and obeys your every request (the ones he's familiar with anyway). Botling knows how to search for nearby restaurants, get an image given a tag, search the New York Times, get a weather forecast, more! (see below for full command list)
 
-#### No knowledge of Go necessary!
+#### Go Knowledge Optional!
 
 ### [Setup & Configuration Instructions](https://github.com/Sproutling/botling/wiki)
 

@@ -112,7 +112,9 @@ func formattedWeather(weather WeatherResults, query string) string {
 		return err.Error()
 	}
 
-	weatherHtml += "<li>Precipitation: " + strconv.FormatFloat(float64Chance*100, 'f', 2, 64) + "&#37; chance</li>"
+	stringChance := strconv.FormatFloat(float64Chance*100, 'f', 2, 64)
+
+	weatherHtml += "<li>Precipitation: " + strings.Split(stringChance, ".")[0] + "&#37; chance</li>"
 
 	// Show current weather if <query> == "today"
 	if query == "today" {

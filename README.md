@@ -1,11 +1,11 @@
 Botling
 =====
 
-#### A Hipchat bot witten in Go[lang] 
+#### A Hipchat bot witten in Go
 
 Botling is a neat little bot with some awesome functionality. He sits comfortably in your Hipchat room and obeys your every request (the ones he's familiar with anyway). Botling knows how to search for nearby restaurants, get an image given a tag, search the New York Times, get a weather forecast, more! (see below for full command list)
 
-#### Go Knowledge Optional!
+#### Go[lang] Knowledge Optional!
 
 ### [Setup & Configuration Instructions](https://github.com/Sproutling/botling/wiki)
 

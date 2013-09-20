@@ -33,7 +33,7 @@ type DailyData struct {
 }
 
 func weather(query string) string {
-	queryUrl := WEATHER_ENDPOINT + weatherApiKey + "/" + LAT_LNG
+	queryUrl := WEATHER_ENDPOINT + weatherApiKey + "/" + latLngPair
 	if query == "tomorrow" {
 		tomorrow := time.Now().AddDate(0, 0, 1)
 		queryUrl += "," + formattedTime(tomorrow)

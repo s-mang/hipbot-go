@@ -1,11 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"github.com/daneharrigan/hipchat"
+	"log"
 	"net/url"
 	"os"
 	"strings"
+)
+
+const (
+	HIPCHAT_HTML_POST_ENDPOINT = "https://api.hipchat.com/v1/rooms/message"
+	HIPCHAT_HTML_POST_COLOR    = "gray"
 )
 
 var (
@@ -17,21 +22,21 @@ var (
 	roomJid     = os.Getenv("ROOM_JID")
 	roomId      = os.Getenv("ROOM_ID")
 	roomApiId   = os.Getenv("ROOM_APIID")
+	latLngPair  = os.Getenv("LAT_LNG_PAIR")
 
-	htmlPostUrl = POST_URL +
+	htmlPostUrl = HIPCHAT_HTML_POST_ENDPOINT +
 		"?room_id=" + url.QueryEscape(roomId) +
 		"&auth_token=" + url.QueryEscape(roomApiId) +
 		"&from=" + url.QueryEscape(fullname) +
-		"&message_format=html" +
-		"&color=" + POST_COLOR +
-		"&message="
+		"&color=" + HIPCHAT_HTML_POST_COLOR +
+		"&message_format=html"
 )
 
 func main() {
 	botling, err := hipchat.NewClient(username, password, resource)
 
 	if err != nil {
-		fmt.Printf("Client error occurred: %s\n", err)
+		log.Println("Client error:", err)
 		return
 	}
 
@@ -46,8 +51,8 @@ func main() {
 
 			if kind == "html" {
 				// HTML messages sent via POST to Hipchat API
-				postUrl := htmlPostUrl + url.QueryEscape(reply)
-				replyWithHtml(postUrl)
+				fullPostUrl := htmlPostUrl + "&message=" + url.QueryEscape(reply)
+				replyWithHtml(fullPostUrl)
 			} else {
 				// Plain text messages sent to Hipchat via XMPP
 				botling.Say(roomJid, mentionname, reply)
@@ -57,7 +62,7 @@ func main() {
 }
 
 // Help Botling join the hipchat room with a status set to 'chat',
-// make Botling say hello, and run Botling as a goroutine
+// Run Botling as a goroutine
 func welcomeBotling(botling hipchat.Client) {
 	botling.Status("chat")
 	botling.Join(roomJid, fullname)

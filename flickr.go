@@ -3,15 +3,18 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 )
 
-var flickrApiKey = os.Getenv("FLICKER_API_KEY")
+const FLICKR_ENDPOINT = "http://api.flickr.com/services/rest"
+
+var flickrApiKey = os.Getenv("FLICKR_API_KEY")
 
 type PhotoResponse struct {
 	Page Page `json:"photos"`
@@ -29,40 +32,44 @@ type Photo struct {
 }
 
 func flickrSearch(query string) string {
+	// Set request args for flickr.photos.search
 	requestArgs := "?method=flickr.photos.search"
 	requestArgs += "&api_key=" + flickrApiKey
 	requestArgs += "&format=json"
-	requestArgs += "&page=1&per_page=1&sort=relevance&is_getty=false&media=photo"
 	requestArgs += "&tags=" + url.QueryEscape(query)
+	// Only get one image, sort by relevance
+	requestArgs += "&page=1&per_page=1&sort=relevance&media=photo"
 
+	// Send GET request, collect response
 	res, err := http.Get(FLICKR_ENDPOINT + requestArgs)
-
 	if err != nil {
-		fmt.Printf("Error occurred in HTTP GET: %s", err)
+		log.Println("Error in HTTP GET:", err)
 		return "error"
 	}
 
 	defer res.Body.Close()
 
-	bdy, err := ioutil.ReadAll(res.Body)
-
+	// Flickr wraps its response json in a function
+	body, err := unwrappedJSON(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println("Error parsing Flickr JSON response:", err)
 		return "error"
 	}
 
-	stringBdy := withoutFlickrWrapper(string(bdy))
-	reader := strings.NewReader(stringBdy)
-	decoder := json.NewDecoder(reader)
-	response := new(PhotoResponse)
+	// Decode JSON body
+	decoder := json.NewDecoder(body)
+	photos := new(PhotoResponse)
+	decoder.Decode(photos)
 
-	decoder.Decode(response)
+	imageCount := len(photos.Page.PhotoList)
 
-	max := len(response.Page.PhotoList)
-
-	if max > 0 {
-		r := randNum(max)
-		src := photoUrl(response.Page.PhotoList[r])
+	// Check if we got any photos back
+	if imageCount > 0 {
+		// Of the photos we got, return one at random
+		// so that if bot is asked to run the same query,
+		// the user is likely to get a different image.
+		r := randNum(imageCount)
+		src := photoUrl(photos.Page.PhotoList[r])
 
 		return "<img src='" + src + "'>"
 	} else {
@@ -71,11 +78,26 @@ func flickrSearch(query string) string {
 
 }
 
-func withoutFlickrWrapper(body string) string {
-	stringBdy := strings.TrimPrefix(string(body), "jsonFlickrApi(")
-	return strings.TrimSuffix(stringBdy, ")")
+// Flickr API responds with wrapped JSON:
+// jsonFlickrApi({"photos":{"page":1, "pages":8291105...}, "stat":"ok"})
+// This method returns the JSON response without the wrapper
+func unwrappedJSON(body io.Reader) (io.Reader, error) {
+	bodyBytes, err := ioutil.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	stringBody := strings.TrimPrefix(string(bodyBytes), "jsonFlickrApi(")
+	stringBody = strings.TrimSuffix(stringBody, ")")
+
+	return strings.NewReader(stringBody), nil
+
 }
 
+// Flickr's photo URL construction is complicated. The JSON we get back from a photo
+// search does not include the direct URL. It does include the parameters needed to construct
+// one though. So grudgingly, we construct it ourselves -
 func photoUrl(photo Photo) string {
 	src := "http://farm"
 	src += string(photo.Farm)

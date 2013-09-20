@@ -2,15 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 )
 
-var nytimesKey = os.Getenv("NYTIMES_KEY")
+const NYTIMES_ENDPOINT = "http://api.nytimes.com/svc/search/v2/articlesearch.json"
+
+var nytimesApiKey = os.Getenv("NYTIMES_API_KEY")
 
 type NytimesResponse struct {
 	ResponseData ResponseData `json:"response"`
@@ -32,27 +33,35 @@ type Headline struct {
 }
 
 func nytimes(subject string) string {
-	additionalParams := "&fq=section_name:" + url.QueryEscape(subject) + "&api-key=" + nytimesKey
+	// Set request args for nytimes search
+	// Sort - newest
+	// query by section name (ie. Technology)
+	additionalParams := "?sort=newest&fq=section_name:" + url.QueryEscape(subject) + "&api-key=" + nytimesApiKey
 
-	res, err := http.Get(NYTIMES_QUERY_URL + additionalParams)
+	// Send GET request, collect response
+	res, err := http.Get(NYTIMES_ENDPOINT + additionalParams)
 
 	if err != nil {
-		fmt.Printf("Error occurred in HTTP GET: %s", err)
+		log.Println("Error occurred in HTTP GET:", err)
 		return "error"
 	}
 
 	defer res.Body.Close()
 
-	bd, _ := ioutil.ReadAll(res.Body)
-	iface := new(NytimesResponse)
+	// Decode JSON body
+	decoder := json.NewDecoder(res.Body)
+	response := new(NytimesResponse)
+	decoder.Decode(response)
 
-	_ = json.Unmarshal(bd, &iface)
-
-	return htmlArticleList(iface.ResponseData.Docs, subject)
+	return htmlArticleList(response.ResponseData.Docs, subject)
 }
 
+// HTML formatter for a []Doc instance
 func htmlArticleList(docs []Doc, querySubject string) string {
+	// Title
 	html := "<strong>NYTIMES ON " + strings.ToUpper(querySubject) + "</strong><br>"
+
+	// Unordered list of first 3 articles
 	html += "<ul>"
 	for i := range docs {
 		if i > 2 {

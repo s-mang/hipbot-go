@@ -6,8 +6,8 @@ package main
 // return a text 1-sentence factoid
 
 import (
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -34,7 +34,7 @@ func numberTrivia(query string) string {
 
 	// Check for error
 	if triviaErr != nil {
-		fmt.Println("Error in HTTP GET:", triviaErr)
+		log.Println("Error in HTTP GET:", triviaErr)
 		return "error"
 	}
 
@@ -42,7 +42,7 @@ func numberTrivia(query string) string {
 	byteBody, stringErr := ioutil.ReadAll(triviaResp.Body)
 
 	if stringErr != nil {
-		fmt.Println("Error reading response body:", stringErr)
+		log.Println("Error reading response body:", stringErr)
 		return "error"
 	}
 

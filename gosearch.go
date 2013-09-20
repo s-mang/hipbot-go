@@ -13,13 +13,13 @@ import (
 
 const GO_DOC_ENDPOINT = "http://api.godoc.org/search"
 
-type Result struct {
+type GoPackageResult struct {
 	Path     string `json:"path"`
 	Synopsis string `json:"synopsis"`
 }
 
-type Response struct {
-	Results []*Result `json:"results"`
+type GoPackageResponse struct {
+	Results []*GoPackageResult `json:"results"`
 }
 
 // Search Godoc.org's docs via their API
@@ -36,7 +36,7 @@ func goSearch(query string) string {
 
 	// Decode JSON body
 	decoder := json.NewDecoder(res.Body)
-	response := new(Response)
+	response := new(GoPackageResponse)
 	decoder.Decode(response)
 
 	if len(response.Results) == 0 {

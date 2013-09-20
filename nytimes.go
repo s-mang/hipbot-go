@@ -2,7 +2,7 @@ package main
 
 // @botling nytimes <section-name-query>
 // Get 3 most recent NY Times article in the section <section-name-query>
-// return a html list of articles or else text no-results response
+// return an HTML list of articles or else text no-results response
 
 import (
 	"encoding/json"

@@ -2,7 +2,7 @@ package main
 
 // @botling image me <query>
 // Search Flickr's photos for <query> via their REST API
-// return HTML image tag or else a text no-results response
+// return an HTML image tag or else a text no-results response
 
 import (
 	"encoding/json"
@@ -110,4 +110,16 @@ func photoUrl(photo Photo) string {
 	src += photo.Secret + ".jpg"
 
 	return src
+}
+
+// Returns a random number between 0 and max
+func randNum(max int) int {
+	// Seed with current time
+	source := rand.NewSource(time.Now().UnixNano())
+	rander := rand.New(source)
+	rInt := rander.Int()
+
+	// make the int smaller (between 0 and max) with mod (%)
+	smallerRInt := rInt % max
+	return smallerRInt
 }

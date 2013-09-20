@@ -2,7 +2,7 @@ package main
 
 // @botling nearby <query>
 // Get 3 nearest places that respond to <query>
-// return a html list of places with a map
+// return an HTML list of places with a map
 
 import (
 	"encoding/json"
@@ -117,6 +117,11 @@ func stringRating(rating json.Number) string {
 	}
 }
 
+// Stringifies lat & lng and concatenates them together with a comma
+func NewLatLngPair(location PlaceLocation) string {
+	return (string(location.Lat) + "," + string(location.Lng))
+}
+
 // Return a string representation the boolean "open_now"
 // If open - "Open Now", if closed - "Closed"
 func openNowHtml(isOpen bool) string {
@@ -125,4 +130,10 @@ func openNowHtml(isOpen bool) string {
 	} else {
 		return "<strong>Closed</strong>"
 	}
+}
+
+// Maps an integer (0 - 6 ONLY) to an upper-case letter
+func alphabet(i int) string {
+	alphab := [7]string{"A", "B", "C", "D", "E", "F", "G"}
+	return alphab[i]
 }

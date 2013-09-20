@@ -9,8 +9,10 @@ import (
 	"strings"
 )
 
+const WOLFRAM_URL = "http://api.wolframalpha.com/v2/query"
+
 var (
-	appid   = os.Getenv("WOLFRAM_APIID")
+	appid   = os.Getenv("WOLFRAM_API_ID")
 	postUrl = WOLFRAM_URL +
 		"?format=html" +
 		"&appid=" + appid

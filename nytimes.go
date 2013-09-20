@@ -1,7 +1,7 @@
 package main
 
 // @botling nytimes <section-name-query>
-// Get 3 most recent NY Times article in the section <section-name-query>
+// Get 4 most recent NY Times article in the section <section-name-query>
 // return an HTML list of articles or else text no-results response
 
 import (
@@ -36,7 +36,7 @@ type Headline struct {
 	Main string `json:"main"`
 }
 
-// Get 3 most recent articles with section_name=<subject>
+// Get 4 most recent articles with section_name=<subject>
 // Uses nytimes API
 // Return HTML formatted list with links to the artilces
 func nytimes(subject string) string {
@@ -73,13 +73,9 @@ func htmlArticleList(docs []Doc, querySubject string) string {
 	// Title
 	html := "<strong>NYTIMES ON " + strings.ToUpper(querySubject) + "</strong><br>"
 
-	// Unordered list of first 3 articles
+	// Unordered list of first 4 articles
 	html += "<ul>"
-	for i := range docs {
-		if i > 2 {
-			break
-		}
-
+	for i := range docs[:4] {
 		html += "<li>"
 		// Header is a link to the article
 		html += "<a href='" + docs[i].Url + "'>" + docs[i].Headline.Main + "</a>: <br>"

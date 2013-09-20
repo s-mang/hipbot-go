@@ -1,7 +1,7 @@
 package main
 
 // @botling nearby <query>
-// Get 3 nearest places that respond to <query>
+// Get 4 nearest places that respond to <query>
 // return an HTML list of places with a map
 
 import (
@@ -50,8 +50,8 @@ type PlacesResponse struct {
 	Places []Place `json:"results"`
 }
 
-// Get 3 nearest places pertaining to <query>
-// HTML response includes a MAP(!) with markers of the 3 locations
+// Get 4 nearest places pertaining to <query>
+// HTML response includes a MAP(!) with markers of the 4 locations
 func places(query string) string {
 	additionalParams := "key=" + googleApiKey + "&keyword=" + url.QueryEscape(query)
 	fullQueryUrl := GOOGLE_PLACES_ENDPOINT + googlePlacesParams + "&" + additionalParams
@@ -75,7 +75,7 @@ func places(query string) string {
 	return htmlPlaces(response.Places, query)
 }
 
-// return HTML, including a static Google MAP with (blue) markers of the 3 locations
+// return HTML, including a static Google MAP with (blue) markers of the 4 locations
 func htmlPlaces(places []Place, query string) string {
 	// Title
 	html := "<strong>Results for Nearby " + strings.Title(query) + "</strong><br>"
@@ -86,8 +86,8 @@ func htmlPlaces(places []Place, query string) string {
 	// Initialize list of marker query params
 	markers := ""
 
-	// Only use the first 3 places
-	for i := range places[:2] {
+	// Only use the first 4 places
+	for i := range places[:4] {
 		// Bullet point for each place, includes name, address, rating (or "N/A"), open-now
 		html += "<li>" + places[i].Name + "<br>"
 		html += places[i].Address + "<br>"

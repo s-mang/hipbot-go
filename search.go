@@ -1,7 +1,7 @@
 package main
 
 // @botling search me <query>
-// Get 3 most relevant search results from duckduckgo.com's API
+// Get relevant search results from duckduckgo.com's API
 // return an HTML list of results or else text no-results response
 
 import (

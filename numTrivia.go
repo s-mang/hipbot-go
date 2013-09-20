@@ -15,7 +15,8 @@ import (
 
 const NUMBERS_API_ENDPOINT = "http://numbersapi.com/"
 
-// Get number/date trivia from numbersapi.com (free number trivia API!)
+// Get number/date trivia from numbersapi.com (free number trivia API. Wheee!)
+// Return text string for Hipchat response
 func numberTrivia(query string) string {
 	// Compiler barfs if we define these with `:=` in the if/else block
 	var triviaResp *http.Response
@@ -47,5 +48,4 @@ func numberTrivia(query string) string {
 	}
 
 	return string(byteBody)
-
 }

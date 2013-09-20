@@ -36,14 +36,18 @@ type Photo struct {
 	Farm   json.Number `json:"farm"`
 }
 
+// Search Flickr's database of photos for ones with tags matching <query>
+// Return an HTML image tag to be POSTed to Hipchat room
 func flickrSearch(query string) string {
 	// Set request args for flickr.photos.search
 	requestArgs := "?method=flickr.photos.search"
 	requestArgs += "&api_key=" + flickrApiKey
 	requestArgs += "&format=json"
 	requestArgs += "&tags=" + url.QueryEscape(query)
-	// Only get one image, sort by relevance
-	requestArgs += "&page=1&per_page=1&sort=relevance&media=photo"
+	// Only get the 30 most relevant images to choose from
+	requestArgs += "&page=1&per_page=30"
+	requestArgs += "&sort=relevance"
+	requestArgs += "&media=photo"
 
 	// Send GET request, collect response
 	res, err := http.Get(FLICKR_ENDPOINT + requestArgs)

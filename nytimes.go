@@ -38,6 +38,7 @@ type Headline struct {
 
 // Get 3 most recent articles with section_name=<subject>
 // Uses nytimes API
+// Return HTML formatted list with links to the artilces
 func nytimes(subject string) string {
 	// Set request args for nytimes search
 	// Sort - newest
@@ -80,9 +81,12 @@ func htmlArticleList(docs []Doc, querySubject string) string {
 		}
 
 		html += "<li>"
+		// Header is a link to the article
 		html += "<a href='" + docs[i].Url + "'>" + docs[i].Headline.Main + "</a>: <br>"
-		html += "<ul style='list-style:none'><li>" + docs[i].Snippet + "</li></ul>"
-		html += "</li><br><br>"
+		// First sentence or two of the article (formatted as a nested bullet point)
+		html += "<ul><li>" + docs[i].Snippet + "</li></ul>"
+		html += "</li>"
+		html += "<br><br>" // 2 line breaks after each article
 	}
 
 	return html

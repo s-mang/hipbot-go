@@ -67,7 +67,7 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 
 		// @botling logo
 	case strings.Contains(message.Body, "logo"):
-		return "<img src='" + LOGO_URL + "'/>", "html"
+		return "<img src='" + logoUrl + "'/>", "html"
 
 		// @botling goodnight
 	case strings.Contains(message.Body, "goodnight"):

@@ -22,7 +22,7 @@ type GoPackageResponse struct {
 	Results []*GoPackageResult `json:"results"`
 }
 
-// Search Godoc.org's docs via their API
+// Search Godoc.org's documentation sets via their API
 func goSearch(query string) string {
 	// Send GET request, collect response
 	res, err := http.Get(GO_DOC_ENDPOINT + "?q=" + url.QueryEscape(query))
@@ -39,12 +39,17 @@ func goSearch(query string) string {
 	response := new(GoPackageResponse)
 	decoder.Decode(response)
 
+	// Check for no results
 	if len(response.Results) == 0 {
 		return "I found nothing! So sorry."
 	} else {
+		// Only show first (most relevant) package
 		firstResult := (*(response.Results[0]))
+
+		// Split response text into "Synopsis" and "Path"
 		textResponse := "Synopsis: " + firstResult.Synopsis
 		textResponse += "\nPath: \"" + firstResult.Path + "\""
+
 		return textResponse
 	}
 }

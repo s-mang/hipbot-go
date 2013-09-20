@@ -1,4 +1,4 @@
-// Botling is a neat little bot with some aweome functionality.
+// Botling is a neat little bot with some awesome functionality.
 // He sits in your Hipchat room and obeys your every request (well, the ones he's familiar with anyway).
 // At the end of the day, botling likes to remind you of how awesome you are.
 // He knows how to search for nearby restaurants, get an image given a tag, search the New York Times,

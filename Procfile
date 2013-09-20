@@ -1,1 +1,1 @@
-worker: ./bin/botling
+worker: ./botling

@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-const GO_DOC_URL = "http://api.godoc.org/search"
+const GO_DOC_ENDPOINT = "http://api.godoc.org/search"
 
 type Result struct {
 	Path     string `json:"path"`
@@ -25,7 +25,7 @@ type Response struct {
 // Search Godoc.org's docs via their API
 func goSearch(query string) string {
 	// Send GET request, collect response
-	res, err := http.Get(GO_DOC_URL + "?q=" + url.QueryEscape(query))
+	res, err := http.Get(GO_DOC_ENDPOINT + "?q=" + url.QueryEscape(query))
 
 	if err != nil {
 		log.Println("Error in HTTP GET:", err)

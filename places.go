@@ -72,7 +72,7 @@ func htmlPlaces(places []Place, query string) string {
 		html += "<em>Rating: " + stringRating(places[i].Rating) + "</em> | "
 		html += openNowHtml(places[i].OpenHours.OpenNow) + "<br></li>"
 
-		markers += "&markers=color:blue|label:" + alphabet(i) + "|" + latlngPair(places[i].Geometry.PlaceLocation)
+		markers += "&markers=color:blue|label:" + alphabet(i) + "|" + NewLatLngPair(places[i].Geometry.PlaceLocation)
 	}
 
 	html += "</ul><br>"

@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"strings"
+	"time"
 )
 
 // Grabs a user's full name from a hipchat.Message.From string
@@ -13,8 +14,7 @@ func name(from string) (nick string) {
 
 // Returns a random number between 0 and max
 func randNum(max int) int {
-	seed := int64(2)
-	source := rand.NewSource(seed)
+	source := rand.NewSource(time.Now().UnixNano())
 	rander := rand.New(source)
 	rInt := rander.Int()
 
@@ -29,7 +29,7 @@ func alphabet(i int) string {
 }
 
 // Stringifies lat & lng and concatenates them together with a comma
-func latlngPair(location PlaceLocation) string {
+func NewLatLngPair(location PlaceLocation) string {
 	return (string(location.Lat) + "," + string(location.Lng))
 }
 

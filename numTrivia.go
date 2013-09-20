@@ -1,5 +1,10 @@
 package main
 
+// @botling trivia me <numerical-query>
+// @botling trivia me today
+// Get number/date trivia about the query (either a number or else "today")
+// return a text 1-sentence factoid
+
 import (
 	"fmt"
 	"io/ioutil"
@@ -8,30 +13,39 @@ import (
 	"time"
 )
 
+const NUMBERS_API_ENDPOINT = "http://numbersapi.com/"
+
+// Get number/date trivia from numbersapi.com (free number trivia API!)
 func numberTrivia(query string) string {
+	// Compiler barfs if we define these with `:=` in the if/else block
 	var triviaResp *http.Response
 	var triviaErr error
 
 	if query == "today" {
+		// Get today's date, convert month and day to int -> string, and send GET to API
 		today := time.Now()
 		_, month, day := today.Date()
 
-		triviaResp, triviaErr = http.Get(NUMBERS_API_URL + "/" + strconv.Itoa(int(month)) + "/" + strconv.Itoa(int(day)) + "/date")
+		triviaResp, triviaErr = http.Get(NUMBERS_API_ENDPOINT + strconv.Itoa(int(month)) + "/" + strconv.Itoa(int(day)) + "/date")
 	} else {
-		triviaResp, triviaErr = http.Get(NUMBERS_API_URL + "/" + query + "/math")
+		// Straight numbers are simpler
+		triviaResp, triviaErr = http.Get(NUMBERS_API_ENDPOINT + query + "/math")
 	}
+
+	// Check for error
 	if triviaErr != nil {
-		fmt.Printf("Error occurred in HTTP GET: %s", triviaErr)
+		fmt.Println("Error in HTTP GET:", triviaErr)
 		return "error"
 	}
 
-	stringBody, stringErr := ioutil.ReadAll(triviaResp.Body)
+	// Response is text, not JSON - so we can just read it and voiala!
+	byteBody, stringErr := ioutil.ReadAll(triviaResp.Body)
 
 	if stringErr != nil {
-		fmt.Printf("Error reading response body: %s", stringErr)
+		fmt.Println("Error reading response body:", stringErr)
 		return "error"
 	}
 
-	return string(stringBody)
+	return string(byteBody)
 
 }

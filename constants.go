@@ -2,7 +2,6 @@ package main
 
 const (
 	// API endpoints
-	NUMBERS_API_URL       = "http://numbersapi.com/"
 	NYTIMES_QUERY_URL     = "http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=newest"
 	QUERY_URL             = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + "--LTLNGPR--" + "&sensor=false&rankby=distance"
 	MAPS_ENDPOINT         = "https://maps.googleapis.com/maps/api/staticmap?center=" + "--LTLNGPR--" + "&zoom=15&size=600x200&sensor=false"

@@ -46,9 +46,9 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 	case strings.Contains(message.Body, "trivia me today"):
 		return numberTrivia("today"), "text"
 
-		// @botling trivia me number 123
-	case strings.Contains(message.Body, "trivia me number"):
-		query := strings.Split(message.Body, "trivia me number ")[1]
+		// @botling trivia me 123
+	case strings.Contains(message.Body, "trivia me"):
+		query := strings.Split(message.Body, "trivia me ")[1]
 		return numberTrivia(query), "text"
 
 		// @botling wolfram me pi

@@ -70,7 +70,7 @@ func weather(query string) string {
 	decoder.Decode(results)
 
 	// Return a nicely formatted HTML version of results, complete with awesome icon
-	return formattedWeather(*weatherResults, query)
+	return formattedWeather(*results, query)
 
 }
 
@@ -98,10 +98,10 @@ func formattedWeather(weather WeatherResults, query string) string {
 	weatherHtml := "&nbsp;&nbsp;<strong>" + formattedTitle + "</strong>: " + dailyData.Summary + ".<br>"
 
 	// High & Low temperatures for <query> in Farenheit
-	weatherHtml += "<ul><li>High: " + dailyData.TempMax + "&deg;, Low: " + dailyData.TempMin + "&deg;</li>"
+	weatherHtml += "<ul><li>High: " + string(dailyData.TempMax) + "&deg;, Low: " + string(dailyData.TempMin) + "&deg;</li>"
 
 	// Percent chance of precipitation (ex: Precipitation: 20% chance)
-	weatherHtml += "<li>Precipitation: " + dailyData.PrecipProbability + "&#37; chance</li>"
+	weatherHtml += "<li>Precipitation: " + string(dailyData.PrecipProbability) + "&#37; chance</li>"
 
 	// Show current weather if <query> == "today"
 	if query == "today" {

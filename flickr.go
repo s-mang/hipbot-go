@@ -9,10 +9,12 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 const FLICKR_ENDPOINT = "http://api.flickr.com/services/rest"

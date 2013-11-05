@@ -16,6 +16,19 @@ import (
 func replyMessage(message hipchat.Message) (reply, kind string) {
 	switch {
 
+	// @botling register fork jhonnas/goblob
+	case strings.Contains(message.Body, "register fork"):
+		fork := strings.Split(message.Body, "register fork ")[1]
+		return registerFork(fork), "html"
+
+	// @botling list forks
+	case strings.Contains(message.Body, "list forks"):
+		return listWatchingForks(), "html"
+
+	// @botling forks
+	case strings.Contains(message.Body, "forks"):
+		return behindForksHTML(), "html"
+
 	// @botling search me HMAC
 	case strings.Contains(message.Body, "search me"):
 		query := strings.Split(message.Body, "search me ")[1]

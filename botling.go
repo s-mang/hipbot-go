@@ -9,7 +9,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/daneharrigan/hipchat"
+	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 	"log"
 	"net/url"
 	"os"
@@ -26,6 +29,12 @@ const (
 
 var (
 	resource = "bot" // Kind of Hipchat user (probably shouldn't change this)
+
+	// Database connection string
+	dburi = os.Getenv("DATABASE_URL")
+
+	// Company github organization name, used for checking for newly-updated forks
+	forkOwner = os.Getenv("GITHUB_FORK_OWNER")
 
 	// Vars needed for Botling to ping Hipchat:
 	username     = os.Getenv("BOT_USERNAME")
@@ -51,12 +60,22 @@ var (
 		"&message_format=html"
 )
 
+var DB gorm.DB
+
 // Init a Hipchat client
 // Set up Botling in your Hipchat room
 // Parse incoming messages & determine if Botling needs to respond
 // Get response from replyMessage(*message) (defined in speak.go)
 // Speak the response via HTTP POST (HTML) or XMPP (plain text)
 func main() {
+	var err error
+	DB, err = gorm.Open("postgres", dburi)
+	if err != nil {
+		panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
+	}
+
+	DB.CreateTable(Fork{})
+
 	botling, err := hipchat.NewClient(username, password, resource)
 
 	if err != nil {

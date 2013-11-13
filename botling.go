@@ -85,7 +85,7 @@ func main() {
 	}
 
 	// Set up fork notifications
-	go scheduleForkUpdates(7*24*time.Hour, "12:17")
+	go scheduleForkUpdates(7*24*time.Hour, "12:20")
 
 	// Get Botling all set up in your Hipchat room
 	botling.Status("chat")

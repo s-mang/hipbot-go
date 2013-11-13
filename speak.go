@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -92,11 +93,16 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 	}
 }
 
-// Post Botling's reply via Hipchat's API (for html responses)
+// Post Botling's reply via Hipchat's API (for html messages)
 // Note that text responses will be submitted to Hipchat via XMPP (see botling.go)
-func replyWithHtml(url string) {
+func speakInHTML(message string, notify bool) {
 	var ioReader io.Reader
-	resp, err := http.Post(url, "html", ioReader)
+	messageURL := htmlPostUrl + "&message=" + url.QueryEscape(message)
+	if notify {
+		messageURL += "&notify=1"
+	}
+
+	resp, err := http.Post(messageURL, "html", ioReader)
 
 	if err != nil {
 		log.Println("Error in POST to Hipchat API:", err)

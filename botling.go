@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 const (
@@ -62,6 +63,10 @@ var (
 
 var DB gorm.DB
 
+func init() {
+	go scheduleForkUpdates(24*time.Hour, "10:20")
+}
+
 // Init a Hipchat client
 // Set up Botling in your Hipchat room
 // Parse incoming messages & determine if Botling needs to respond
@@ -99,8 +104,7 @@ func main() {
 
 			if kind == "html" {
 				// HTML messages sent via POST to Hipchat API
-				fullPostUrl := htmlPostUrl + "&message=" + url.QueryEscape(reply)
-				replyWithHtml(fullPostUrl)
+				speakInHTML(reply, false)
 			} else {
 				// Plain text messages sent to Hipchat via XMPP
 				botling.Say(roomJid, mentionname, reply)

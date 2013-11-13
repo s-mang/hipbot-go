@@ -4,14 +4,43 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/go-github/github"
+	"strconv"
 	"strings"
 	"time"
 )
+
+const NO_UPDATES_MESSAGE = "All forks up to date."
 
 type Fork struct {
 	Id    int64
 	Owner string
 	Repo  string
+}
+
+func scheduleForkUpdates(delay time.Duration, alertTimeStr string) error {
+	alertTime, err := timeToAlert(alertTimeStr)
+	if err != nil {
+		return err
+	}
+
+	// Wait until the starting alert time occurs
+	time.Sleep(alertTime.Sub(time.Now()))
+
+	ticker := time.NewTicker(delay)
+
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				wkday := time.Now().Weekday()
+				if wkday != time.Saturday && wkday != time.Sunday {
+					speakInHTML(behindForksHTML(), true)
+				}
+			}
+		}
+	}()
+
+	return nil
 }
 
 func registerFork(ownerRepo string) string {
@@ -51,12 +80,13 @@ func behindForksHTML() string {
 		}
 	}
 
-	var behindHTML string
+	behindHTML := "<strong>A fork update!</strong><br>"
 
 	if len(behindForks) == 0 {
-		behindHTML = "All forks up to date."
+		behindHTML += NO_UPDATES_MESSAGE
 	} else {
-		behindHTML = "<strong>Out-of-date Forks</strong><ul>"
+		behindHTML += "The following forks are out of date:"
+		behindHTML += "<ul>"
 		behindHTML += strings.Join(behindForks, "")
 		behindHTML += "</ul>"
 	}
@@ -100,4 +130,28 @@ func listWatchingForks() string {
 	}
 
 	return html
+}
+
+func timeToAlert(alertTimeStr string) (time.Time, error) {
+	tim := strings.Split(alertTimeStr, ":")
+	if len(tim) != 2 {
+		return time.Time{}, errors.New("Time should be of the form hour:min (ie. 14:30)")
+	}
+	hour, err := strconv.Atoi(tim[0])
+	if err != nil {
+		return time.Time{}, err
+	}
+	min, err := strconv.Atoi(tim[1])
+	if err != nil {
+		return time.Time{}, err
+	}
+	location := time.Now().Location()
+	year, month, day := time.Now().Date()
+
+	alertTime := time.Date(year, month, day, hour, min, 0, 0, location)
+	if alertTime.Before(time.Now()) {
+		alertTime = alertTime.Add(time.Hour * 24)
+	}
+
+	return alertTime, nil
 }

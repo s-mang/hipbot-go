@@ -26,6 +26,9 @@ func scheduleForkUpdates(delay time.Duration, alertTimeStr string) error {
 	// Wait until the starting alert time occurs
 	time.Sleep(alertTime.Sub(time.Now()))
 
+	// Initial speak
+	speakInHTML(behindForksHTML(), true)
+
 	ticker := time.NewTicker(delay)
 
 	go func() {

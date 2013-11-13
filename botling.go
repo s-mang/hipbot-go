@@ -63,10 +63,6 @@ var (
 
 var DB gorm.DB
 
-func init() {
-	go scheduleForkUpdates(7*24*time.Hour, "10:30")
-}
-
 // Init a Hipchat client
 // Set up Botling in your Hipchat room
 // Parse incoming messages & determine if Botling needs to respond
@@ -87,6 +83,9 @@ func main() {
 		log.Println("Client error:", err)
 		return
 	}
+
+	// Set up fork notifications
+	go scheduleForkUpdates(7*24*time.Hour, "12:17")
 
 	// Get Botling all set up in your Hipchat room
 	botling.Status("chat")

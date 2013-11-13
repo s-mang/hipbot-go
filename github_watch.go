@@ -148,7 +148,11 @@ func timeToAlert(alertTimeStr string) (time.Time, error) {
 	if err != nil {
 		return time.Time{}, err
 	}
-	location := time.Now().Location()
+	location, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		return time.Time{}, err
+	}
+	fmt.Println(location.String())
 	year, month, day := time.Now().Date()
 
 	alertTime := time.Date(year, month, day, hour, min, 0, 0, location)

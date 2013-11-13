@@ -53,7 +53,7 @@ func replyMessage(message hipchat.Message) (reply, kind string) {
 		// @botling image me sunset
 	case strings.Contains(message.Body, "image me"):
 		query := strings.Split(message.Body, "image me ")[1]
-		return flickrSearch(query), "html"
+		return bingImageSearch(query), "html"
 
 		// @botling weather me today
 	case strings.Contains(message.Body, "weather me"):

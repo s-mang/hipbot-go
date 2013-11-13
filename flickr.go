@@ -1,6 +1,7 @@
 package main
 
-// @botling image me <query>
+// NOT USED FOR `image me` QUERIES ANY MORE!! -- See bing.go
+
 // Search Flickr's photos for <query> via their REST API
 // return an HTML image tag or else a text no-results response
 

@@ -64,7 +64,7 @@ var (
 var DB gorm.DB
 
 func init() {
-	go scheduleForkUpdates(24*time.Hour, "10:20")
+	go scheduleForkUpdates(7*24*time.Hour, "10:30")
 }
 
 // Init a Hipchat client

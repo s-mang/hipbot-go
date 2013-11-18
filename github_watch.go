@@ -26,9 +26,6 @@ func scheduleForkUpdates(delay time.Duration, alertTimeStr string) error {
 	// Wait until the starting alert time occurs
 	time.Sleep(alertTime.Sub(time.Now()))
 
-	// Initial speak
-	speakInHTML(behindForksHTML(), true)
-
 	ticker := time.NewTicker(delay)
 
 	go func() {
@@ -36,8 +33,8 @@ func scheduleForkUpdates(delay time.Duration, alertTimeStr string) error {
 			select {
 			case <-ticker.C:
 				wkday := time.Now().Weekday()
-				if wkday != time.Saturday && wkday != time.Sunday {
-					speakInHTML(behindForksHTML(), true)
+				if wkday == time.Friday {
+					speakInHTML(behindForksHTML(), false)
 				}
 			}
 		}

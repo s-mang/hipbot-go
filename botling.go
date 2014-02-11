@@ -75,8 +75,6 @@ func main() {
 		panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
 	}
 
-	DB.CreateTable(Fork{})
-
 	botling, err := hipchat.NewClient(username, password, resource)
 
 	if err != nil {

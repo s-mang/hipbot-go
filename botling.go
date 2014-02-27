@@ -105,7 +105,7 @@ func main() {
 	go func() {
 		for {
 			botling.SendOrg(" ")
-			time.Sleep(60 * time.Second)
+			time.Sleep(30 * time.Second)
 		}
 	}()
 

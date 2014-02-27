@@ -104,7 +104,7 @@ func main() {
 	// Keepalive
 	go func() {
 		for {
-			botling.Send(xmpp.Chat{Remote: roomJid, Type: "keepalive", Text: " "})
+			botling.Send(xmpp.Chat{Remote: roomJid, Type: "chat", Text: " "})
 			time.Sleep(60 * time.Second)
 		}
 	}()

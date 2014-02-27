@@ -87,7 +87,7 @@ func main() {
 		Host:     fullConnectURL,
 		User:     jabberId,
 		Password: password,
-		Debug:    true,
+		Debug:    false,
 		Resource: resource,
 	}
 

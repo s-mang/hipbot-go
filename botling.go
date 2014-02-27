@@ -104,7 +104,7 @@ func main() {
 	// Keepalive
 	go func() {
 		for {
-			botling.Send(xmpp.Chat{Remote: roomJid, Type: "chat", Text: " "})
+			botling.SendOrg(" ")
 			time.Sleep(60 * time.Second)
 		}
 	}()
@@ -131,7 +131,7 @@ func main() {
 					speakInHTML(reply, false)
 				} else {
 					// Plain text messages sent to Hipchat via XMPP
-					botling.Send(xmpp.Chat{Remote: roomJid, Type: "chat", Text: reply})
+					botling.Send(xmpp.Chat{Remote: roomJid, Type: "stream", Text: reply})
 				}
 			}
 		} else {

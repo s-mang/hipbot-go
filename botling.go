@@ -101,6 +101,10 @@ func main() {
 	// Join main room
 	botling.JoinMUC(roomJid, fullname)
 
+	go func() {
+		botling.Send(xmpp.Chat{Remote: roomJid, Type: "keepalive", Text: " "})
+	}()
+
 	// Set up fork notifications
 	go scheduleForkUpdates(24*time.Hour, "12:40")
 

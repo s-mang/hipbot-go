@@ -21,7 +21,7 @@ import (
 
 const (
 	// HipChat jabber info
-	HIPCHAT_JABBER_CONNECT_URL = "chat.hipchat.com:5222"
+	HIPCHAT_JABBER_CONNECT_URL = "chat.hipchat.com"
 
 	HIPCHAT_HTML_POST_ENDPOINT = "https://api.hipchat.com/v1/rooms/message"
 

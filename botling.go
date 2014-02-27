@@ -101,8 +101,12 @@ func main() {
 	// Join main room
 	botling.JoinMUC(roomJid, fullname)
 
+	// Keepalive
 	go func() {
-		botling.Send(xmpp.Chat{Remote: roomJid, Type: "keepalive", Text: " "})
+		for {
+			botling.Send(xmpp.Chat{Remote: roomJid, Type: "keepalive", Text: " "})
+			time.Sleep(60 * time.Second)
+		}
 	}()
 
 	// Set up fork notifications

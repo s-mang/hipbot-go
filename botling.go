@@ -10,17 +10,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/daneharrigan/hipchat"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+	"github.com/mattn/go-xmpp"
 	"log"
 	"net/url"
 	"os"
-	"strings"
 	"time"
 )
 
 const (
+	// HipChat jabber info
+	HIPCHAT_JABBER_CONNECT_URL = "chat.hipchat.com:5222"
+
 	HIPCHAT_HTML_POST_ENDPOINT = "https://api.hipchat.com/v1/rooms/message"
 
 	// Color is for HTML responses ONLY! (roughly 3/4 of commands respond in HTML)
@@ -75,7 +77,8 @@ func main() {
 		panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
 	}
 
-	botling, err := hipchat.NewClient(username, password, resource)
+	var botling *xmpp.Client
+	botling, err = xmpp.NewClient(HIPCHAT_JABBER_CONNECT_URL, username, password, false)
 
 	if err != nil {
 		log.Println("Client error:", err)
@@ -85,15 +88,23 @@ func main() {
 	// Set up fork notifications
 	go scheduleForkUpdates(24*time.Hour, "12:40")
 
-	// Get Botling all set up in your Hipchat room
-	botling.Status("chat")
-	botling.Join(roomJid, fullname)
-
-	// Run botling as a goroutine
-	go botling.KeepAlive()
-
 	// Check for @botling in messages & respond accordingly
-	for message := range botling.Messages() {
+	go func() {
+		for {
+			chat, err := botling.Recv()
+			if err != nil {
+				log.Fatal(err)
+			}
+			switch v := chat.(type) {
+			case xmpp.Chat:
+				fmt.Println(v.Remote, v.Text)
+			case xmpp.Presence:
+				fmt.Println(v.From, v.Show)
+			}
+		}
+	}()
+
+	/*for message := range botling.Messages() {
 		if strings.HasPrefix(message.Body, "@"+mentionname) {
 
 			// Get appropriate reply message
@@ -107,5 +118,5 @@ func main() {
 				botling.Say(roomJid, mentionname, reply)
 			}
 		}
-	}
+	}*/
 }

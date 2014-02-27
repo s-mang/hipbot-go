@@ -5,7 +5,6 @@ package main
 // the format of the response ("html" or "text")
 
 import (
-	"github.com/daneharrigan/hipchat"
 	"io"
 	"log"
 	"net/http"
@@ -14,82 +13,82 @@ import (
 )
 
 // Returns the appropriate reply message for a given ping
-func replyMessage(message hipchat.Message) (reply, kind string) {
+func replyMessage(message string) (reply, kind string) {
 	switch {
 
 	// @botling register fork jhonnas/goblob
-	case strings.Contains(message.Body, "register fork"):
-		fork := strings.Split(message.Body, "register fork ")[1]
+	case strings.Contains(message, "register fork"):
+		fork := strings.Split(message, "register fork ")[1]
 		return registerFork(fork), "html"
 
 	// @botling list forks
-	case strings.Contains(message.Body, "list forks"):
+	case strings.Contains(message, "list forks"):
 		return listWatchingForks(), "html"
 
 	// @botling forks
-	case strings.Contains(message.Body, "forks"):
+	case strings.Contains(message, "forks"):
 		return behindForksHTML(), "html"
 
 	// @botling search me HMAC
-	case strings.Contains(message.Body, "search me"):
-		query := strings.Split(message.Body, "search me ")[1]
+	case strings.Contains(message, "search me"):
+		query := strings.Split(message, "search me ")[1]
 		return webSearch(query), "html"
 
 		// @botling thesaurus me challenge
-	case strings.Contains(message.Body, "thesaurus me"):
-		query := strings.Split(message.Body, "thesaurus me ")[1]
+	case strings.Contains(message, "thesaurus me"):
+		query := strings.Split(message, "thesaurus me ")[1]
 		return synonyms(query), "html"
 
 		// @botling nearby sushi
-	case strings.Contains(message.Body, "nearby"):
-		query := strings.Split(message.Body, "nearby ")[1]
+	case strings.Contains(message, "nearby"):
+		query := strings.Split(message, "nearby ")[1]
 		return places(query), "html"
 
 		// @botling nytimes technology
-	case strings.Contains(message.Body, "nytimes"):
-		query := strings.Split(message.Body, "nytimes ")[1]
+	case strings.Contains(message, "nytimes"):
+		query := strings.Split(message, "nytimes ")[1]
 		return nytimes(query), "html"
 
 		// @botling image me sunset
-	case strings.Contains(message.Body, "image me"):
-		query := strings.Split(message.Body, "image me ")[1]
+	case strings.Contains(message, "image me"):
+		query := strings.Split(message, "image me ")[1]
 		return bingImageSearch(query), "html"
 
 		// @botling weather me today
-	case strings.Contains(message.Body, "weather me"):
-		query := strings.Split(message.Body, "weather me ")[1]
+	case strings.Contains(message, "weather me"):
+		query := strings.Split(message, "weather me ")[1]
 		return weather(query), "html"
 
 		// @botling trivia me today
-	case strings.Contains(message.Body, "trivia me today"):
+	case strings.Contains(message, "trivia me today"):
 		return numberTrivia("today"), "text"
 
 		// @botling trivia me 123
-	case strings.Contains(message.Body, "trivia me"):
-		query := strings.Split(message.Body, "trivia me ")[1]
+	case strings.Contains(message, "trivia me"):
+		query := strings.Split(message, "trivia me ")[1]
 		return numberTrivia(query), "text"
 
 		// @botling wolfram me pi
-	case strings.Contains(message.Body, "wolfram me"):
-		query := strings.Split(message.Body, "wolfram me ")[1]
+	case strings.Contains(message, "wolfram me"):
+		query := strings.Split(message, "wolfram me ")[1]
 		return wolframSearch(query), "html"
 
 		// @botling gopkg math
-	case strings.Contains(message.Body, "gopkg"):
-		query := strings.Split(message.Body, "gopkg ")[1]
+	case strings.Contains(message, "gopkg"):
+		query := strings.Split(message, "gopkg ")[1]
 		return goSearch(query), "text"
 
 		// @botling logo
-	case strings.Contains(message.Body, "logo"):
+	case strings.Contains(message, "logo"):
 		return "<img src='" + logoUrl + "'/>", "html"
 
 		// @botling goodnight
-	case strings.Contains(message.Body, "goodnight"):
-		return "Goodnight, " + name(message.From) + ". You're awesome.", "text"
+	case strings.Contains(message, "goodnight"):
+		return "Goodnight. You're awesome.", "text"
 
 		// @botling foo
 	default:
-		return "Hello, " + name(message.From), "text"
+		return "Hello!", "text"
 	}
 }
 

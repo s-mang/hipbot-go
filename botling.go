@@ -10,18 +10,20 @@ package main
 
 import (
 	"fmt"
+	"github.com/Sproutling/go-xmpp"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	"github.com/mattn/go-xmpp"
 	"log"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
 const (
 	// HipChat jabber info
-	HIPCHAT_JABBER_CONNECT_URL = "chat.hipchat.com:5223"
+	HIPCHAT_JABBER_CONNECT_URL  = "chat.hipchat.com"
+	HIPCHAT_JABBER_CONNECT_PORT = "5223"
 
 	HIPCHAT_HTML_POST_ENDPOINT = "https://api.hipchat.com/v1/rooms/message"
 
@@ -78,45 +80,49 @@ func main() {
 	}
 
 	var botling *xmpp.Client
-	botling, err = xmpp.NewClient(HIPCHAT_JABBER_CONNECT_URL, username, password, true)
+	fullConnectURL := HIPCHAT_JABBER_CONNECT_URL + ":" + HIPCHAT_JABBER_CONNECT_PORT
+	jabberId := username + "@" + HIPCHAT_JABBER_CONNECT_URL
 
+	opts := xmpp.Options{
+		Host:     fullConnectURL,
+		User:     jabberId,
+		Password: password,
+		Debug:    true,
+		Resource: resource,
+	}
+
+	// Initialize client
+	botling, err = opts.NewClient()
 	if err != nil {
 		log.Println("Client error:", err)
 		return
 	}
 
+	// Join main room
+	botling.JoinMUC(roomJid, fullname)
+
 	// Set up fork notifications
 	go scheduleForkUpdates(24*time.Hour, "12:40")
 
 	// Check for @botling in messages & respond accordingly
-	go func() {
-		for {
-			chat, err := botling.Recv()
-			if err != nil {
-				log.Fatal(err)
-			}
-			switch v := chat.(type) {
-			case xmpp.Chat:
-				fmt.Println(v.Remote, v.Text)
-			case xmpp.Presence:
-				fmt.Println(v.From, v.Show)
+	for {
+		message, err := botling.Recv()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if chatMsg, ok := message.(xmpp.Chat); ok {
+			if strings.HasPrefix(chatMsg.Text, "@"+mentionname) {
+				// Get appropriate reply message
+				reply, kind := replyMessage(chatMsg.Text)
+
+				if kind == "html" {
+					// HTML messages sent via POST to Hipchat API
+					speakInHTML(reply, false)
+				} else {
+					// Plain text messages sent to Hipchat via XMPP
+					botling.Send(xmpp.Chat{Remote: roomJid, Type: "chat", Text: reply})
+				}
 			}
 		}
-	}()
-
-	/*for message := range botling.Messages() {
-		if strings.HasPrefix(message.Body, "@"+mentionname) {
-
-			// Get appropriate reply message
-			reply, kind := replyMessage(*message)
-
-			if kind == "html" {
-				// HTML messages sent via POST to Hipchat API
-				speakInHTML(reply, false)
-			} else {
-				// Plain text messages sent to Hipchat via XMPP
-				botling.Say(roomJid, mentionname, reply)
-			}
-		}
-	}*/
+	}
 }

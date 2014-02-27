@@ -98,6 +98,8 @@ func main() {
 		return
 	}
 
+	defer botling.Close()
+
 	// Join main room
 	botling.JoinMUC(roomJid, fullname)
 

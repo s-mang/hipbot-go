@@ -131,7 +131,7 @@ func main() {
 					speakInHTML(reply, false)
 				} else {
 					// Plain text messages sent to Hipchat via XMPP
-					botling.Send(xmpp.Chat{Remote: roomJid + "/" + fullname, Type: "chat", Text: reply})
+					botling.Send(xmpp.Chat{To: roomJid, From: roomJid + "/" + fullname, Type: "groupchat", Text: reply})
 				}
 			}
 		} else {

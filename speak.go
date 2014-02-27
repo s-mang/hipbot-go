@@ -101,6 +101,8 @@ func speakInHTML(message string, notify bool) {
 		messageURL += "&notify=1"
 	}
 
+	log.Println(messageURL)
+
 	resp, err := http.Post(messageURL, "html", ioReader)
 
 	if err != nil {

@@ -119,9 +119,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		log.Println(message)
 		if chatMsg, ok := message.(xmpp.Chat); ok {
-			log.Println(chatMsg)
 			if strings.HasPrefix(chatMsg.Text, "@"+mentionname) {
 				// Get appropriate reply message
 				reply, kind := replyMessage(chatMsg.Text)
@@ -134,8 +132,6 @@ func main() {
 					botling.Send(xmpp.Chat{To: roomJid, From: roomJid + "/" + fullname, Type: "groupchat", Text: reply})
 				}
 			}
-		} else {
-			log.Println("msg was not a chat message.")
 		}
 	}
 }

@@ -78,7 +78,7 @@ func main() {
 	}
 
 	var botling *xmpp.Client
-	botling, err = xmpp.NewClient(HIPCHAT_JABBER_CONNECT_URL, username, password, false)
+	botling, err = xmpp.NewClient(HIPCHAT_JABBER_CONNECT_URL, username, password, true)
 
 	if err != nil {
 		log.Println("Client error:", err)

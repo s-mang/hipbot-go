@@ -79,6 +79,8 @@ func main() {
 		panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
 	}
 
+	DB.CreateTable(Fork{})
+
 	var botling *xmpp.Client
 	fullConnectURL := HIPCHAT_JABBER_CONNECT_URL + ":" + HIPCHAT_JABBER_CONNECT_PORT
 	jabberId := username + "@" + HIPCHAT_JABBER_CONNECT_URL

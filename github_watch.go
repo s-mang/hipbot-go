@@ -3,10 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/google/go-github/github"
+	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"code.google.com/p/goauth2/oauth"
+	"github.com/google/go-github/github"
 )
 
 const NO_UPDATES_MESSAGE = "All forks up to date."
@@ -68,7 +71,12 @@ func behindForksHTML() string {
 	var forks []Fork
 	DB.Find(&forks)
 
-	client := github.NewClient(nil)
+	t := &oauth.Transport{
+		Token: &oauth.Token{AccessToken: os.Getenv("GITHUB_AUTH_TOKEN")},
+	}
+
+	client := github.NewClient(t.Client())
+
 	behindForks := []string{}
 
 	for _, r := range forks {

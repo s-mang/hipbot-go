@@ -9,8 +9,7 @@
 package main
 
 import (
-	"fmt"
-	"github.com/Sproutling/go-xmpp"
+	"github.com/adams-sarah/go-xmpp"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 	"log"
@@ -36,10 +35,10 @@ var (
 	resource = "bot" // Kind of Hipchat user (probably shouldn't change this)
 
 	// Database connection string
-	dburi = os.Getenv("DATABASE_URL")
+	// dburi = os.Getenv("DATABASE_URL")
 
 	// Company github organization name, used for checking for newly-updated forks
-	forkOwner = os.Getenv("GITHUB_FORK_OWNER")
+	// forkOwner = os.Getenv("GITHUB_FORK_OWNER")
 
 	// Vars needed for Botling to ping Hipchat:
 	username     = os.Getenv("BOT_USERNAME")
@@ -54,7 +53,7 @@ var (
 	latLngPair = os.Getenv("LAT_LNG_PAIR")
 
 	// Var needed for Botling to respond to a request for the company logos
-	logoUrl = os.Getenv("COMPANY_LOGO_URL")
+	// logoUrl = os.Getenv("COMPANY_LOGO_URL")
 
 	// URL used to post HTML to your Hipchat room, complete with query params
 	htmlPostUrl = HIPCHAT_HTML_POST_ENDPOINT +
@@ -74,10 +73,10 @@ var DB gorm.DB
 // Speak the response via HTTP POST (HTML) or XMPP (plain text)
 func main() {
 	var err error
-	DB, err = gorm.Open("postgres", dburi)
-	if err != nil {
-		panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
-	}
+	// DB, err = gorm.Open("postgres", dburi)
+	// if err != nil {
+	// 	panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
+	// }
 
 	var botling *xmpp.Client
 	fullConnectURL := HIPCHAT_JABBER_CONNECT_URL + ":" + HIPCHAT_JABBER_CONNECT_PORT
@@ -110,7 +109,7 @@ func main() {
 	}()
 
 	// Set up fork notifications
-	go scheduleForkUpdates(24*time.Hour, "12:40")
+	// go scheduleForkUpdates(24*time.Hour, "12:40")
 
 	// Check for @botling in messages & respond accordingly
 	for {

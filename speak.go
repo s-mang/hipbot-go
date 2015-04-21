@@ -16,18 +16,18 @@ import (
 func replyMessage(message string) (reply, kind string) {
 	switch {
 
-	// @botling register fork jhonnas/goblob
-	case strings.Contains(message, "register fork"):
-		fork := strings.Split(message, "register fork ")[1]
-		return registerFork(fork), "html"
+	// // @botling register fork jhonnas/goblob
+	// case strings.Contains(message, "register fork"):
+	// 	fork := strings.Split(message, "register fork ")[1]
+	// 	return registerFork(fork), "html"
 
-	// @botling list forks
-	case strings.Contains(message, "list forks"):
-		return listWatchingForks(), "html"
+	// // @botling list forks
+	// case strings.Contains(message, "list forks"):
+	// 	return listWatchingForks(), "html"
 
-	// @botling forks
-	case strings.Contains(message, "forks"):
-		return behindForksHTML(), "html"
+	// // @botling forks
+	// case strings.Contains(message, "forks"):
+	// 	return behindForksHTML(), "html"
 
 	// @botling search me HMAC
 	case strings.Contains(message, "search me"):
@@ -78,11 +78,11 @@ func replyMessage(message string) (reply, kind string) {
 		query := strings.Split(message, "gopkg ")[1]
 		return goSearch(query), "text"
 
-		// @botling logo
-	case strings.Contains(message, "logo"):
-		return "<img src='" + logoUrl + "'/>", "html"
+	// 	// @botling logo
+	// case strings.Contains(message, "logo"):
+	// 	return "<img src='" + logoUrl + "'/>", "html"
 
-		// @botling goodnight
+	// @botling goodnight
 	case strings.Contains(message, "goodnight"):
 		return "Goodnight. You're awesome.", "text"
 

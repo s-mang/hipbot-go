@@ -3,13 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 	"time"
-
-	"code.google.com/p/goauth2/oauth"
-	"github.com/google/go-github/github"
 )
 
 const NO_UPDATES_MESSAGE = "All forks up to date."
@@ -47,46 +43,48 @@ func scheduleForkUpdates(delay time.Duration, alertTimeStr string) error {
 }
 
 func registerFork(ownerRepo string) string {
-	split := strings.Split(ownerRepo, "/")
-	if len(split) != 2 {
-		return "Invalid fork name. Must be of the form 'original-owner/repo-name'"
-	} else if split[0] == forkOwner {
-		return "Invalid fork. Please use the original author when registering a fork."
-	}
+	// split := strings.Split(ownerRepo, "/")
+	// if len(split) != 2 {
+	// 	return "Invalid fork name. Must be of the form 'original-owner/repo-name'"
+	// } else if split[0] == forkOwner {
+	// 	return "Invalid fork. Please use the original author when registering a fork."
+	// }
 
-	fork := Fork{}
-	DB.Where("owner = ? AND repo = ?", split[0], split[1]).Find(&fork)
+	// fork := Fork{}
+	// DB.Where("owner = ? AND repo = ?", split[0], split[1]).Find(&fork)
 
-	if fork.Id != int64(0) {
-		return "Already watching " + ownerRepo
-	}
+	// if fork.Id != int64(0) {
+	// 	return "Already watching " + ownerRepo
+	// }
 
-	fork = Fork{Owner: split[0], Repo: split[1]}
-	DB.Save(&fork)
+	// fork = Fork{Owner: split[0], Repo: split[1]}
+	// DB.Save(&fork)
 
-	return "Fork successfully registered."
+	// return "Fork successfully registered."
+
+	return "Feature is disabled."
 }
 
 func behindForksHTML() string {
-	var forks []Fork
-	DB.Find(&forks)
+	// var forks []Fork
+	// DB.Find(&forks)
 
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: os.Getenv("GITHUB_AUTH_TOKEN")},
-	}
+	// t := &oauth.Transport{
+	// 	Token: &oauth.Token{AccessToken: os.Getenv("GITHUB_AUTH_TOKEN")},
+	// }
 
-	client := github.NewClient(t.Client())
+	// client := github.NewClient(t.Client())
 
 	behindForks := []string{}
 
-	for _, r := range forks {
-		behind, err := r.isBehind(client)
-		if err != nil {
-			return fmt.Sprintf("Error: %v", err)
-		} else if behind {
-			behindForks = append(behindForks, fmt.Sprintf("<li>%s/%s</li>", r.Owner, r.Repo))
-		}
-	}
+	// for _, r := range forks {
+	// 	behind, err := r.isBehind(client)
+	// 	if err != nil {
+	// 		return fmt.Sprintf("Error: %v", err)
+	// 	} else if behind {
+	// 		behindForks = append(behindForks, fmt.Sprintf("<li>%s/%s</li>", r.Owner, r.Repo))
+	// 	}
+	// }
 
 	behindHTML := "<strong>A fork update!</strong><br>"
 
@@ -102,21 +100,21 @@ func behindForksHTML() string {
 	return behindHTML
 }
 
-func (f Fork) isBehind(client *github.Client) (bool, error) {
-	opt := github.CommitsListOptions{Author: f.Owner}
-	upstreamCommits, _, err := client.Repositories.ListCommits(forkOwner, f.Repo, &opt)
-	if err != nil {
-		return false, err
-	} else if len(upstreamCommits) == 0 {
-		return false, errors.New("No commits found")
-	}
-	lastUpstreamCommitTime := *upstreamCommits[0].Commit.Author.Date
+// func (f Fork) isBehind(client *github.Client) (bool, error) {
+// 	opt := github.CommitsListOptions{Author: f.Owner}
+// 	upstreamCommits, _, err := client.Repositories.ListCommits(forkOwner, f.Repo, &opt)
+// 	if err != nil {
+// 		return false, err
+// 	} else if len(upstreamCommits) == 0 {
+// 		return false, errors.New("No commits found")
+// 	}
+// 	lastUpstreamCommitTime := *upstreamCommits[0].Commit.Author.Date
 
-	opt = github.CommitsListOptions{Since: lastUpstreamCommitTime.Add(time.Second)}
-	newCommits, _, err := client.Repositories.ListCommits(f.Owner, f.Repo, &opt)
+// 	opt = github.CommitsListOptions{Since: lastUpstreamCommitTime.Add(time.Second)}
+// 	newCommits, _, err := client.Repositories.ListCommits(f.Owner, f.Repo, &opt)
 
-	return (len(newCommits) > 0), err
-}
+// 	return (len(newCommits) > 0), err
+// }
 
 func listWatchingForks() string {
 	var forks []Fork

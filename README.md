@@ -1,11 +1,11 @@
-Botling - A Hipchat Bot
+hipbot-go (formerly Hipbot-go) - A Hipchat Bot
 =====
 
-Botling was written by Sproutling in the awesome Go[lang]. Feel free to fork, submit, request, comment, love, etc.
+Hipbot-go is a Hipchat bot written in Go. This was my first Go project.
 
-Botling is a neat little bot with some awesome functionality. He sits comfortably in your Hipchat room waiting for a command. You can ask Botling to search for nearby restaurants, find an image given a tag, get the latest New York Times articles from a section, report the weather forecast. These are just examples (see below for full command list).
+Hipbot-go is a neat little bot with some awesome functionality. He sits comfortably in your Hipchat room waiting for a command. You can ask Hipbot-go to search for nearby restaurants, find an image given a tag, get the latest New York Times articles from a section, report the weather forecast. These are just examples (see below for full command list).
 
-## Botling's Commands 
+## Hipbot-go's Commands 
 1. **@botling nearby sushi**
     * Google Places search for "sushi" near your specified lat & lng
 2. **@botling nytimes technology**
@@ -29,7 +29,7 @@ Botling is a neat little bot with some awesome functionality. He sits comfortabl
 11. **@botling search me HMAC**
     * Search the web for information on "HMAC" (uses duckduckgo.com for search engine)
 12. **@botling goodnight**
-    * Tell Botling goodnight! He will respond with a nice farewell
+    * Tell Hipbot-go goodnight! He will respond with a nice farewell
 13. **@botling foobar baz**
     * Say anything else, and botling will respond with "Hello, FirstName LastName"
 
@@ -38,21 +38,15 @@ Botling is a neat little bot with some awesome functionality. He sits comfortabl
 	
 ## Setup & Configuration
 ### Plain-Ol', Short & Sweet Setup Instructions:
-1. Clone the Botling repo `git clone git@github.com:Sproutling/botling.git`
-2. Deploy your Botling app to a server (<a href='http://heroku.com'>Heroku</a> is an easy one). You'll need to use a custom buildpack on Heroku: `heroku create -b https://github.com/kr/heroku-buildpack-go.git`.
-3. Set the necessary environment variables for your Botling app - list is below.
+1. Clone the Hipbot-go repo `git clone git@github.com:adams-sarah/hipgo.git`
+2. Deploy your Hipbot-go app to a server (<a href='http://heroku.com'>Heroku</a> is an easy one). You'll need to use a custom buildpack on Heroku: `heroku create -b https://github.com/kr/heroku-buildpack-go.git`.
+3. Set the necessary environment variables for your Hipbot-go app - list is below.
 4. If there's any functionality you don't want to use, be sure to comment it out in `speak.go`.
 5. Run botling on a worker instance. On Heroku, configuring this is a matter of setting your free Dyno to 'worker' and not 'web'. You can do this at https://dashboard.heroku.com/apps/YOUR-APP-NAME/resources
 
-### Step-By-Step, Walkthrough Instructions:
-1. <a href='https://github.com/Sproutling/botling/wiki/Botling-Setup-on-Heroku'>Clone the Botling repo and deploy to Heroku</a>
-2. <a href='https://github.com/Sproutling/botling/wiki/Hipchat-Keys-and-Setup'>Set up Hipchat for a new Botling</a>
-3. <a href='https://github.com/Sproutling/botling/wiki/API-Keys-and-Configuration'>API tokens and environment variables</a>
-
-
 <br>
 	
-## Botling's Environment Varaibles 	
+## Hipbot-go's Environment Varaibles 	
 #### External APIs
 1. Flickr (`image me`): `FLICKR_API_KEY`
 2. New York Times (`nytimes me`): `NYTIMES_API_KEY`

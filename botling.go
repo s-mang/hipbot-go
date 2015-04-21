@@ -9,6 +9,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/adams-sarah/go-xmpp"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -24,11 +25,11 @@ const (
 	HIPCHAT_JABBER_CONNECT_URL  = "chat.hipchat.com"
 	HIPCHAT_JABBER_CONNECT_PORT = "5223"
 
-	HIPCHAT_HTML_POST_ENDPOINT = "https://api.hipchat.com/v1/rooms/message"
+	HIPCHAT_HTML_ENDPOINT_TMPL = "https://api.hipchat.com/v2/room/%s/notification"
 
 	// Color is for HTML responses ONLY! (roughly 3/4 of commands respond in HTML)
 	// Available colors are  "yellow", "red", "green", "purple", "gray", or "random"
-	HIPCHAT_HTML_POST_COLOR = "gray"
+	HIPCHAT_HTML_COLOR = "gray"
 )
 
 var (
@@ -55,12 +56,13 @@ var (
 	// Var needed for Botling to respond to a request for the company logos
 	// logoUrl = os.Getenv("COMPANY_LOGO_URL")
 
+	HIPCHAT_HTML_ENDPOINT = fmt.Sprintf(HIPCHAT_HTML_ENDPOINT_TMPL, roomId)
+
 	// URL used to post HTML to your Hipchat room, complete with query params
-	htmlPostUrl = HIPCHAT_HTML_POST_ENDPOINT +
-		"?room_id=" + url.QueryEscape(roomId) +
-		"&auth_token=" + url.QueryEscape(roomApiToken) +
+	htmlPostUrl = HIPCHAT_HTML_ENDPOINT +
+		"?auth_token=" + url.QueryEscape(roomApiToken) +
 		"&from=" + url.QueryEscape(fullname) +
-		"&color=" + HIPCHAT_HTML_POST_COLOR +
+		"&color=" + HIPCHAT_HTML_COLOR +
 		"&message_format=html"
 )
 

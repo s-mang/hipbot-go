@@ -24,6 +24,20 @@ var (
 	googleApiKey       = os.Getenv("GOOGLE_API_KEY")
 )
 
+var quotaGuardStaticURL *url.URL
+
+func init() {
+	envURL := os.Getenv("QUOTAGUARDSTATIC_URL")
+
+	var err error
+	quotaGuardStaticURL, err = url.ParseRequestURI(envURL)
+
+	if err != nil {
+		log.Println("DEBUG: env-url:", quotaGuardStaticURL)
+		panic("Error parsing quotaguard url:" + err.Error())
+	}
+}
+
 type Place struct {
 	Icon      string      `json:"icon"`
 	Name      string      `json:"name"`
@@ -56,9 +70,12 @@ func places(query string) string {
 	additionalParams := "key=" + googleApiKey + "&keyword=" + url.QueryEscape(query)
 	fullQueryUrl := GOOGLE_PLACES_ENDPOINT + googlePlacesParams + "&" + additionalParams
 
-	// Send GET request, collect response
-	res, err := http.Get(fullQueryUrl)
+	// Sent GET request through proxy for static IP on heroku
+	// -> for use with QuotaGuard
+	transport := &http.Transport{Proxy: http.ProxyURL(quotaGuardStaticURL)}
+	client := &http.Client{Transport: transport}
 
+	res, err := client.Get(fullQueryUrl)
 	if err != nil {
 		log.Println("Error in HTTP GET:", err)
 		return "error"

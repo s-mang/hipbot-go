@@ -6,32 +6,32 @@ Hipbot-go is a Hipchat bot written in Go. This was my first Go project.
 Hipbot-go is a neat little bot with some awesome functionality. He sits comfortably in your Hipchat room waiting for a command. You can ask Hipbot-go to search for nearby restaurants, find an image given a tag, get the latest New York Times articles from a section, report the weather forecast. These are just examples (see below for full command list).
 
 ## Hipbot-go's Commands 
-1. **@botling nearby sushi**
+1. **@hipbot nearby sushi**
     * Google Places search for "sushi" near your specified lat & lng
-2. **@botling nytimes technology**
+2. **@hipbot nytimes technology**
     * Search recent New York Times articles in the "technology" section
-3. **@botling image me sunset**
+3. **@hipbot image me sunset**
     * Search Flickr for a photo of a "sunset"
-4. **@botling weather me tomorrow**
+4. **@hipbot weather me tomorrow**
     * Get tomorrow's weather
-5. **@botling trivia me today**
+5. **@hipbot trivia me today**
     * Get trivia factoids for today's date (interesting or historical events)
-6. **@botling trivia me 123**
+6. **@hipbot trivia me 123**
     * Get trivia on a number "123" (math facts)
-7. **@botling wolfram me periodic table of elements**
+7. **@hipbot wolfram me periodic table of elements**
     * Get computational information from Wolfram Alpha on the "periodic table of elements"
-8. **@botling gopkg math**
+8. **@hipbot gopkg math**
     * Get the synopsis and path for the Go[lang] package "math"
-9. **@botling company logo**
+9. **@hipbot company logo**
     * Get the logo of your company (url specified by you - see configuration section of the wiki)
-10. **@botling thesaurus me challenge**
+10. **@hipbot thesaurus me challenge**
     * Get synonyms for the word "challenge"
-11. **@botling search me HMAC**
+11. **@hipbot search me HMAC**
     * Search the web for information on "HMAC" (uses duckduckgo.com for search engine)
-12. **@botling goodnight**
+12. **@hipbot goodnight**
     * Tell Hipbot-go goodnight! He will respond with a nice farewell
-13. **@botling foobar baz**
-    * Say anything else, and botling will respond with "Hello, FirstName LastName"
+13. **@hipbot foobar baz**
+    * Say anything else, and hipbot will respond with "Hello, FirstName LastName"
 
 
 <br>
@@ -42,7 +42,7 @@ Hipbot-go is a neat little bot with some awesome functionality. He sits comforta
 2. Deploy your Hipbot-go app to a server (<a href='http://heroku.com'>Heroku</a> is an easy one). You'll need to use a custom buildpack on Heroku: `heroku create -b https://github.com/kr/heroku-buildpack-go.git`.
 3. Set the necessary environment variables for your Hipbot-go app - list is below.
 4. If there's any functionality you don't want to use, be sure to comment it out in `speak.go`.
-5. Run botling on a worker instance. On Heroku, configuring this is a matter of setting your free Dyno to 'worker' and not 'web'. You can do this at https://dashboard.heroku.com/apps/YOUR-APP-NAME/resources
+5. Run hipbot on a worker instance. On Heroku, configuring this is a matter of setting your free Dyno to 'worker' and not 'web'. You can do this at https://dashboard.heroku.com/apps/YOUR-APP-NAME/resources
 
 <br>
 	

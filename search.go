@@ -1,6 +1,6 @@
 package main
 
-// @botling search me <query>
+// @hipbot search me <query>
 // Get relevant search results from duckduckgo.com's API
 // return an HTML list of results or else text no-results response
 

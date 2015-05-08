@@ -1,6 +1,6 @@
 package main
 
-// @botling Wolfram me pi
+// @hipbot Wolfram me pi
 // Get first 6 Wolfram search results
 // return an HTML list of these results (includes embedded images)
 // Wolfram (Alpha) is a search engine for computational information

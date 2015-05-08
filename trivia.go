@@ -1,7 +1,7 @@
 package main
 
-// @botling trivia me <numerical-query>
-// @botling trivia me today
+// @hipbot trivia me <numerical-query>
+// @hipbot trivia me today
 // Get number/date trivia about the query (either a number or else "today")
 // return a text 1-sentence factoid
 

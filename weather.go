@@ -1,7 +1,7 @@
 package main
 
-// @botling weather me today
-// @botling weather me tomorrow
+// @hipbot weather me today
+// @hipbot weather me tomorrow
 // Get all weather info for either today or tomorrow
 // return an HTML list of weather attributes along with a pretty icon representation
 // Many thanks to azuresol for the AWESOME & FREE ICONS! (http://azuresol.deviantart.com/)

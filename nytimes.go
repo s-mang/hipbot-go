@@ -1,6 +1,6 @@
 package main
 
-// @botling nytimes <section-name-query>
+// @hipbot nytimes <section-name-query>
 // Get 4 most recent NY Times article in the section <section-name-query>
 // return an HTML list of articles or else text no-results response
 

@@ -2,7 +2,7 @@ package main
 
 // NOT USED FOR `image me` QUERIES -- See bing.go
 
-// @botling image me <query>
+// @hipbot image me <query>
 // Search Bing's photos for <query> via their API
 // return an HTML image tag or else a text no-results response
 

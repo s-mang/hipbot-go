@@ -1,6 +1,6 @@
 package main
 
-// @botling thesaurus me <word-query>
+// @hipbot thesaurus me <word-query>
 // Get all synonyms from bighugelabs.com's API
 // return an HTML list of synonyms or else text no-results response
 

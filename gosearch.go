@@ -1,6 +1,6 @@
 package main
 
-// @botling gopkg <package-name>
+// @hipbot gopkg <package-name>
 // Search Godoc.org's docs for <package-name> via their API
 // return a text 1-sentence explanation of package or else a text no-results response
 

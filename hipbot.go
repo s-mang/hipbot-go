@@ -1,6 +1,6 @@
-// Botling is a neat little bot with some awesome functionality.
+// Hipbot is a neat little bot with some awesome functionality.
 // He sits in your Hipchat room and obeys your every request (well, the ones he's familiar with anyway).
-// At the end of the day, botling likes to remind you of how awesome you are.
+// At the end of the day, hipbot likes to remind you of how awesome you are.
 // He knows how to search for nearby restaurants, get an image given a tag, search the New York Times,
 // get a weather forecast, and much more.
 //
@@ -41,7 +41,7 @@ var (
 	// Company github organization name, used for checking for newly-updated forks
 	// forkOwner = os.Getenv("GITHUB_FORK_OWNER")
 
-	// Vars needed for Botling to ping Hipchat:
+	// Vars needed for Hipbot to ping Hipchat:
 	username     = os.Getenv("BOT_USERNAME")
 	mentionname  = os.Getenv("BOT_MENTIONNAME")
 	fullname     = os.Getenv("BOT_FULLNAME")
@@ -53,7 +53,7 @@ var (
 	// Var needed for location-based commands (ie. weather, nearby)
 	latLngPair = os.Getenv("LAT_LNG_PAIR")
 
-	// Var needed for Botling to respond to a request for the company logos
+	// Var needed for Hipbot to respond to a request for the company logos
 	// logoUrl = os.Getenv("COMPANY_LOGO_URL")
 
 	HIPCHAT_HTML_ENDPOINT = fmt.Sprintf(HIPCHAT_HTML_ENDPOINT_TMPL, roomId)
@@ -69,8 +69,8 @@ var (
 var DB gorm.DB
 
 // Init a Hipchat client
-// Set up Botling in your Hipchat room
-// Parse incoming messages & determine if Botling needs to respond
+// Set up Hipbot in your Hipchat room
+// Parse incoming messages & determine if Hipbot needs to respond
 // Get response from replyMessage(*message) (defined in speak.go)
 // Speak the response via HTTP POST (HTML) or XMPP (plain text)
 func main() {
@@ -80,7 +80,7 @@ func main() {
 	// 	panic(fmt.Sprintf("Could not connect to database. Error: '%v'", err))
 	// }
 
-	var botling *xmpp.Client
+	var hipbot *xmpp.Client
 	fullConnectURL := HIPCHAT_JABBER_CONNECT_URL + ":" + HIPCHAT_JABBER_CONNECT_PORT
 	jabberId := username + "@" + HIPCHAT_JABBER_CONNECT_URL
 
@@ -93,19 +93,19 @@ func main() {
 	}
 
 	// Initialize client
-	botling, err = opts.NewClient()
+	hipbot, err = opts.NewClient()
 	if err != nil {
 		log.Println("Client error:", err)
 		return
 	}
 
 	// Join main room
-	botling.JoinMUC(roomJid, fullname)
+	hipbot.JoinMUC(roomJid, fullname)
 
 	// Keepalive
 	go func() {
 		for {
-			botling.SendOrg(" ")
+			hipbot.SendOrg(" ")
 			time.Sleep(30 * time.Second)
 		}
 	}()
@@ -113,9 +113,9 @@ func main() {
 	// Set up fork notifications
 	// go scheduleForkUpdates(24*time.Hour, "12:40")
 
-	// Check for @botling in messages & respond accordingly
+	// Check for @hipbot in messages & respond accordingly
 	for {
-		message, err := botling.Recv()
+		message, err := hipbot.Recv()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -130,7 +130,7 @@ func main() {
 					speakInHTML(reply, false)
 				} else {
 					// Plain text messages sent to Hipchat via XMPP
-					botling.Send(xmpp.Chat{To: roomJid, From: roomJid + "/" + fullname, Type: "groupchat", Text: reply})
+					hipbot.Send(xmpp.Chat{To: roomJid, From: roomJid + "/" + fullname, Type: "groupchat", Text: reply})
 				}
 			}
 		}

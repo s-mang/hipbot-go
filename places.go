@@ -1,6 +1,6 @@
 package main
 
-// @botling nearby <query>
+// @hipbot nearby <query>
 // Get 4 nearest places that respond to <query>
 // return an HTML list of places with a map
 
